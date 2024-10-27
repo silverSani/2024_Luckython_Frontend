@@ -3,9 +3,9 @@ import { Link } from "react-router-dom"
 export default function Home(){
 
 
-    return (<div>안녕
+    return (<div>대충 홈화면이라 생각
         <Link to="/login">
-            버튼임
+            guest 말고 owner로 시작하기
         </Link>
     </div>)
 }
