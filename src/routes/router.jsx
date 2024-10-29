@@ -9,6 +9,8 @@ export default function Router(){
         <Routes>
             <Route path="/" element={<Home/>}> </Route>
             <Route path="/login" element={<Login/>}> </Route>
+            <Route path="/owner" element={<Owner/>}> </Route>
+            <Route path="/ownerPlaylist" element={<OwenerPlaylist/>}> </Route>
         </Routes>
     )
 }
