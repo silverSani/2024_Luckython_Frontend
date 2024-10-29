@@ -1,0 +1,62 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: sans-serif;
+}
+
+.signupContainer {
+  text-align: center;
+  margin-right: 40px;
+}
+
+.signupContainer p {
+  font-size: 1.2em;
+  font-weight: normal;
+}
+
+.signupContainer b {
+  font-weight: bold;
+}
+
+.signupButton {
+  margin-top: 20px;
+  padding: 10px 20px;
+  border: 1px solid #aaa;
+  border-radius: 5px;
+  background-color: transparent;
+  color: #aaa;
+  cursor: pointer;
+}
+
+.loginContainer {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+}
+
+.inputGroup {
+  margin-bottom: 15px;
+}
+
+.input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #aaa;
+}
+
+.checkboxContainer {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.loginButton {
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #d3d3d3;
+  color: #fff;
+  cursor: pointer;
+  border: none;
+}
