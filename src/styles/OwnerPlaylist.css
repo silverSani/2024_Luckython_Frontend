@@ -1,0 +1,132 @@
+.ownerPlaylistContainer {
+  background: linear-gradient(to right, #F5E8F1, #F6E3E7, #C8D5E3);
+  display: flex;
+  flex-direction: row;
+  margin: 0 20px;
+  padding: 5px;
+  border-radius: 20px;
+  box-shadow: 3px 3px 3px gray;
+}
+
+.playlistTitle {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.playlistHead{
+  display: flex;
+  flex-direction: row;
+  margin-top: 50px;
+}
+
+.playlistName {
+  margin-left: 10px;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.playlist-info {
+  display: flex;
+  align-items: flex-start;
+  margin-top: 20px;
+}
+
+.playlist-cover {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 40px;
+}
+
+.playlist-cover img {
+  border-radius: 50%;
+  margin-top: 50px;
+  margin-left: 50px;
+  width: 300px;
+  height: 300px;
+}
+
+.playlist-title {
+  font-weight: bold;
+  font-size: 24px;
+  margin-top: 30px;
+  margin-left: 50px;
+  text-align: center;
+}
+
+.playlist-description {
+  text-align: center;
+  margin-top: 10px;
+  margin-left: 50px;
+}
+
+.profile-edit {
+  display: flex; /* 아이콘과 텍스트를 가로로 정렬 */
+  align-items: center; /* 수직 정렬을 중앙으로 설정 */
+}
+
+.ChangeBtn{
+  margin-top: 20%;
+}
+
+
+.profile-edit-button{
+  display: inline;
+  background-color: #A9A9C6;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px; 
+}
+
+.edit{
+    display: flex;
+    flex-direction: column;
+    margin-left:auto;
+}
+
+
+.edit-button {
+  background-color: #A9A9C6;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px; 
+  margin-left:auto;
+  cursor: pointer;
+}
+
+.edit-button:hover {
+  background-color: #C9BAD3;
+}
+.songs-table thead th {
+  border-bottom: 2px solid #ccc;
+}
+
+.songs-table {
+  width: 100%;
+  border-collapse: collapse;
+
+}
+
+.songs-table th, .songs-table td {
+  padding: 15px 10px;
+  text-align: left;
+  color:gray
+}
+
+.songs-table td input[type="checkbox"] {
+  margin-right: 5px;
+}
+
+.check{
+  background-color: #F5E8F1;
+  border-color: #F5E8F1;
+}
+
+.playlist-edit{
+  display: flex;
+  flex-direction: row;
+  gap: 10px; 
+}
