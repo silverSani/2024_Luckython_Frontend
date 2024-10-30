@@ -14,13 +14,22 @@ html, body {
   margin: 0 auto; /* 가운데 정렬 */
 }
 
-.content-left, .content-right {
+.content-left{
   width: 50%;
   display: flex;
   flex-direction: column;
   justify-content: center; 
   align-items: flex-start; /* 왼쪽 정렬 */
   padding-left: 3rem;
+}
+.content-right {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; 
+  padding-left: 3rem;
+  align-items: center; /* 요소들을 가운데 정렬 */
+  gap: 1.25rem;
 }
 
 .content-left p {
@@ -56,25 +65,42 @@ html, body {
 
 .inputGroup {
   margin-bottom: 0.9375rem; /* 15px -> 0.9375rem */
-  width: 100%;
+  width: 90%;
   padding: 0 1.25rem; /* 양쪽 여백 20px -> 1.25rem */
+}
+
+.inputGroup label{
+  font-family: 'Pretendard';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  color: #525252;
 }
 
 .input {
   width: 100%;
   padding: 0.625rem; /* 10px -> 0.625rem */
   border-radius: 0.3125rem; /* 5px -> 0.3125rem */
-  border: 0.0625rem solid #aaa; /* 1px -> 0.0625rem */
+  border: 0.0625rem solid #A9A9C6; /* 1px -> 0.0625rem */
 }
-
-
 
 .checkboxContainer {
   display: flex;
   align-items: center;
   margin-bottom: 0.9375rem; 
-  width: 100%;
+  width: 90%;
   padding: 0 1.25rem; 
+}
+
+.checkboxContainer label{
+  font-family: 'Pretendard';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  color: #525252;
+  margin-left: 0.5rem;
 }
 
 .loginButton {
@@ -86,6 +112,6 @@ html, body {
   color: #fff;
   cursor: pointer;
   border: none;
-  width: 24rem;  
+  width: 21rem;  
   margin: 0 auto;
 }

@@ -17,8 +17,8 @@ function LoginPage() {
   return (
     <div className="container">
        <div class="content-left">
-        <p>아직, <br/><b>SoundPin</b> 회원이 <br/>아니세요?</p>
-        <button className="signupButton">회원가입</button>
+        <div><p>아직, <br/><b>SoundPin</b> 회원이 <br/>아니세요?</p></div>
+        <div><button className="signupButton" onClick={() => window.location.href = "/sign-up"}>회원가입</button></div>
       </div>
       <div class="vertical-line"></div>
       <div class="content-right">
