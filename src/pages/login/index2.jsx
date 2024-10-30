@@ -23,7 +23,7 @@ function LoginPage() {
       <div class="vertical-line"></div>
       <div class="content-right">
         <div className="inputGroup">
-            <label> 아이디 <span style={{ color: '#be0000' }}>*</span></label>
+            <label>아이디 *</label>
             <input 
               type="text" 
               value={username} 
@@ -32,7 +32,7 @@ function LoginPage() {
             />
           </div>
           <div className="inputGroup">
-            <label>비밀번호 <span style={{ color: '#be0000' }}>*</span></label>
+            <label>비밀번호 *</label>
             <input 
               type="password" 
               value={password} 

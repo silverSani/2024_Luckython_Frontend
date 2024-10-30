@@ -38,13 +38,12 @@ html, body {
   padding: 0.625rem 1.25rem; 
   border: 0.15rem solid #A9A9C6; 
   border-radius: 0.5rem;
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 700;
   background-color: transparent;
   color: #A9A9C6;
   cursor: pointer;
   justify-content: left;
-  width: 12rem;
 }
 
 .vertical-line {
@@ -72,20 +71,19 @@ html, body {
 .checkboxContainer {
   display: flex;
   align-items: center;
-  margin-bottom: 0.9375rem; 
+  margin-bottom: 0.9375rem; /* 15px -> 0.9375rem */
   width: 100%;
-  padding: 0 1.25rem; 
+  padding: 0 1.25rem; /* 양쪽 여백 20px -> 1.25rem */
 }
 
 .loginButton {
-  padding: 0.625rem 1.25rem; 
-  border-radius: 0.5rem;
-  background-color: #A9A9C6;
-  font-size: 1.1rem;
-  font-weight: 700;
+  padding: 0.625rem; /* 10px -> 0.625rem */
+  border-radius: 0.3125rem; /* 5px -> 0.3125rem */
+  background-color: #d3d3d3;
   color: #fff;
   cursor: pointer;
   border: none;
-  width: 24rem;  
+  width: 100%;
+  max-width: 12.5rem; /* 최대 너비 200px -> 12.5rem */
   margin: 0 auto;
 }
