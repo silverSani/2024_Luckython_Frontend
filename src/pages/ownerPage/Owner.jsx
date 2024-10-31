@@ -7,7 +7,6 @@ import Me from '../../assets/Me.png';
 import { FaUserGear } from "react-icons/fa6";
 import { useNavigate } from 'react-router-dom';
 
-
 function Owner() {
   const options = {
     width: "300",

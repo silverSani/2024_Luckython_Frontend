@@ -2,7 +2,7 @@
   background: linear-gradient(to right, #F5E8F1, #F6E3E7, #C8D5E3);
   display: flex;
   flex-direction: row;
-  margin: 0 30px;
+  margin: 0 20px;
   padding: 5px;
   border-radius: 20px;
   box-shadow: 3px 3px 3px gray;
@@ -62,8 +62,8 @@
 }
 
 .profile-edit {
-  display: flex; /* 아이콘과 텍스트를 가로로 정렬 */
-  align-items: center; /* 수직 정렬을 중앙으로 설정 */
+  display: flex; /* �꾩씠肄섍낵 �띿뒪�몃� 媛�濡쒕줈 �뺣젹 */
+  align-items: center; /* �섏쭅 �뺣젹�� 以묒븰�쇰줈 �ㅼ젙 */
 }
 
 .ChangeBtn{
