@@ -6,8 +6,8 @@
     text-align: center;
 }
 
-.logo {
-    max-width: 50rem; /* 로고 이미지 크기 조절 */
+.home-logo {
+    max-width: 50rem; /*로고 이미지 크기 조절*/
     margin-bottom: 8rem;
 }
 

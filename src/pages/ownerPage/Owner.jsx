@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import '../../styles/Owner.css';
 import api from "services/api";
-import YouTube from "react-youtube";
-import PinLogo from "../../assets/soundpinLogo.png";
+import Pin from "../../assets/soundpinLogo.png"
 import Me from '../../assets/Me.png';
 import { FaUserGear } from "react-icons/fa6";
 import { useNavigate } from 'react-router-dom';
@@ -100,12 +99,14 @@ function Owner() {
   };
 
   return (
-    <div className="header">
-      <div className="header-container">
-        <div className="logo">
-          <img src={PinLogo} alt="Pin Logo" className="pinLogo" />
-        </div>
-        <input
+      <div className="header">
+        <div className="header-container">
+          <h1 className="logo">
+            <span className="pinLogoContainer">
+            <img className="pinLogo" src={Pin} alt="pinLogo" />
+            </span>
+          </h1>
+          <input
           className="search-bar"
           type="text"
           placeholder="Search using Pin..."
@@ -113,7 +114,7 @@ function Owner() {
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
         />
-        <FaUserGear style={{ fontSize: '30px', cursor: 'pointer' }} onClick={handleIconClick} />
+        <FaUserGear style={{ fontSize: '30px', cursor: 'pointer' }} />
       </div>
 
       <div className="profile-container">

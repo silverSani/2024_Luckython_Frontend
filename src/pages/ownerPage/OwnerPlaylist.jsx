@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import '../../styles/OwnerPlaylist.css'; 
 import '../../styles/Owner.css';
-import Pin from "../../assets/pin1.png";
-import axios from 'axios';
-import api from "services/api";
+import Pin from "../../assets/soundpinLogo.png"
+import api from "services/api"
 import { FaUserGear, FaRegCirclePlay } from "react-icons/fa6";
+import axios from 'axios';
 
 function OwnerPlaylist() {
   const [pinNumber, setPinNumber] = useState('');
@@ -134,7 +134,9 @@ function OwnerPlaylist() {
     <div className="header">
       <div className="header-container">
         <h1 className="logo">
-          SoundP<span className="pinLogoContainer"><img className="pinLogo" src={Pin} alt="pinLogo" /></span>n
+          <span className="pinLogoContainer">
+            <img className="pinLogo" src={Pin} alt="pinLogo" />
+          </span>
         </h1>
         <input
           className="search-bar"
