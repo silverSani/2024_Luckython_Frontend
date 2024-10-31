@@ -62,7 +62,7 @@ export default function Home() {
       <ToastContainer />
       <div className={`fade-overlay ${fadeOut ? "fade-out" : ""}`} />
       <div className="containerhome">
-        <img src="/images/soundpin.png" alt="SoundPin Logo" className="logo" />
+        <img src="/images/soundpin.png" alt="SoundPin Logo" className="home-logo" />
         <div className="search-bar-home">
           <input
             type="text"
