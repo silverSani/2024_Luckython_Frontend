@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import '../../styles/OwnerPlaylist.css'; 
 import '../../styles/Owner.css';
-import Pin from "../../assets/pin1.png"
-import api from "services/api"
+import Pin from "../../assets/pin1.png";
+import axios from 'axios';
+import api from "services/api";
 import { FaUserGear, FaRegCirclePlay } from "react-icons/fa6";
 
 function OwnerPlaylist() {
@@ -13,30 +14,25 @@ function OwnerPlaylist() {
   const [profileName, setProfileName] = useState('사용자 이름');
   const [playlist, setPlaylist] = useState({ title: '', id: '', isEditable: false }); 
   const [editedTitle, setEditedTitle] = useState('');
+  const [songs, setSongs] = useState([]); // State to hold playlist items
 
-  const songs = [
-    { id: 1, title: '아 진짜 너무 졸리다', artist: '이지은 망명', likes: 1500 },
-    { id: 2, title: '피곤해용 힘들어요', artist: '이지은 영혼', likes: 2 },
-    { id: 3, title: '리액트 못하겠어요', artist: '박은산 영혼', likes: 20000 },
-    // ... 추가 노래 데이터
-  ];
-
-  // 플레이리스트 데이터를 API로부터 가져오는 함수
+  // 플레이리스트 데이터를 API로부터 가져오는 함수 
   useEffect(() => {
-    api.get('/api/playlists')
-      .then(response => {
-        const fetchedPlaylist = response.data[0]; // 첫 번째 플레이리스트를 가져온다고 가정
-        setPlaylist({
-          title: fetchedPlaylist.title,
-          id: fetchedPlaylist.id,
-          isEditable: fetchedPlaylist.isEditable,
-        });
-        setEditedTitle(fetchedPlaylist.title);
-      })
-      .catch(error => {
-        console.error('플레이리스트 로드 중 오류:', error);
-      });
-  }, []);
+    let config = {
+      method: 'get',
+      maxBodyLength: Infinity,
+      url: 'http://3.36.76.110:8080/api/playlistItems/5',
+      headers: { }
+    };
+    
+    axios.request(config)
+    .then((response) => {
+      console.log(JSON.stringify(response.data));
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  });
 
   // 플레이리스트 제목을 업데이트하는 함수
   const updatePlaylistTitle = () => {
@@ -69,6 +65,7 @@ function OwnerPlaylist() {
       .then(response => {
         console.log('플레이리스트 삭제 완료:', response.data);
         setPlaylist({ title: '', id: '', isEditable: false }); // 플레이리스트 초기화
+        setSongs([]); // 노래 초기화
         setSelectedSongs([]); // 선택된 노래 초기화
       })
       .catch(error => {
@@ -147,7 +144,7 @@ function OwnerPlaylist() {
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
         />
-        <FaUserGear style={{ fontSize: '30px', cursor: 'pointer' }}/>
+        <FaUserGear style={{ fontSize: '30px', cursor: 'pointer' }} />
       </div>
       <div className="ownerPlaylistContainer">
         <div className="playlistTitle">
