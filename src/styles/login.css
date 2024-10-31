@@ -14,13 +14,22 @@ html, body {
   margin: 0 auto; /* 가운데 정렬 */
 }
 
-.content-left, .content-right {
+.content-left{
   width: 50%;
   display: flex;
   flex-direction: column;
   justify-content: center; 
   align-items: flex-start; /* 왼쪽 정렬 */
   padding-left: 3rem;
+}
+.content-right {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; 
+  padding-left: 3rem;
+  align-items: center; /* 요소들을 가운데 정렬 */
+  gap: 1.8rem;
 }
 
 .content-left p {
@@ -56,25 +65,50 @@ html, body {
 
 .inputGroup {
   margin-bottom: 0.9375rem; /* 15px -> 0.9375rem */
-  width: 100%;
+  width: 90%;
   padding: 0 1.25rem; /* 양쪽 여백 20px -> 1.25rem */
 }
 
-.input {
-  width: 100%;
-  padding: 0.625rem; /* 10px -> 0.625rem */
-  border-radius: 0.3125rem; /* 5px -> 0.3125rem */
-  border: 0.0625rem solid #aaa; /* 1px -> 0.0625rem */
+.inputGroup label{
+  font-family: 'Pretendard';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  color: #525252;
 }
 
+.input {
+  border: none;
+  border-bottom: 0.1rem solid #A9A9C6; /* 밑줄만 보이도록 설정 */
+  padding: 10px 5px;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease; /* 전환 효과 */
+}
 
+/* 포커스 시 밑줄 색 변경 */
+.input:focus {
+  outline: none;
+  border-bottom: 0.1rem solid #3A3A7D; /* 포커스 시 밑줄 색상 */
+}
 
 .checkboxContainer {
   display: flex;
   align-items: center;
   margin-bottom: 0.9375rem; 
-  width: 100%;
+  width: 90%;
   padding: 0 1.25rem; 
+}
+
+.checkboxContainer label{
+  font-family: 'Pretendard';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  color: #525252;
+  margin-left: 0.5rem;
 }
 
 .loginButton {
@@ -85,7 +119,15 @@ html, body {
   font-weight: 700;
   color: #fff;
   cursor: pointer;
-  border: none;
-  width: 24rem;  
+  border: 0.15rem solid #A9A9C6;
+  width: 21rem;  
   margin: 0 auto;
+}
+
+.loginButton:hover{
+  border-color: #3A3A7D;
+}
+
+.signupButton:hover{
+  border-color: #3A3A7D;
 }
