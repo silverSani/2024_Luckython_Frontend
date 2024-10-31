@@ -16,23 +16,34 @@ function OwnerPlaylist() {
   const [editedTitle, setEditedTitle] = useState('');
   const [songs, setSongs] = useState([]); // State to hold playlist items
 
-  // 플레이리스트 데이터를 API로부터 가져오는 함수 
-  useEffect(() => {
-    let config = {
-      method: 'get',
-      maxBodyLength: Infinity,
-      url: 'http://3.36.76.110:8080/api/playlistItems/5',
-      headers: { }
-    };
-    
-    axios.request(config)
+ //플레이리스트 데이터를 API로부터 가져오는 함수 
+ useEffect(() => {
+  let config = {
+    method: 'get',
+    maxBodyLength: Infinity,
+    url: 'http://3.36.76.110:8080/api/playlistItems/3',
+    headers: {}
+  };
+
+  axios.request(config)
     .then((response) => {
       console.log(JSON.stringify(response.data));
+      
+      // 응답 데이터에서 dataList 배열을 가져오기
+      const playlistName = response.data.dataList;
+      if (Array.isArray(playlistName)) {
+        setSongs(playlistName); 
+      } else {
+        console.error("응답 데이터가 배열이 아닙니다:", playlistName);
+        setSongs([]); // 배열이 아닌 경우 빈 배열로 초기화
+      }
     })
     .catch((error) => {
-      console.log(error);
+      console.log("API 호출 중 오류 발생:", error);
     });
-  });
+}, []);
+
+
 
   // 플레이리스트 제목을 업데이트하는 함수
   const updatePlaylistTitle = () => {
@@ -143,8 +154,8 @@ function OwnerPlaylist() {
           type="text"
           placeholder="Search using Pin..."
           value={pinNumber}
-          onChange={handleInputChange}
-          onKeyDown={handleKeyDown}
+          onChange={(e) => setPinNumber(e.target.value)}
+          onKeyDown={(e) => e.key === 'Enter' && console.log(`Searching for Pin: ${pinNumber}`)}
         />
         <FaUserGear style={{ fontSize: '30px', cursor: 'pointer' }} />
       </div>
@@ -155,7 +166,10 @@ function OwnerPlaylist() {
             <h1 className="playlistName">{playlist.title || '플레이리스트 이름'}</h1>
           </div>
           <div className="playlist-cover">
-            <img src="https://via.placeholder.com/150" alt="Playlist Cover" />
+            <div className='playlist'/>
+           
+           
+           
             <div className="playlist-description">
               아이유, 태연, 볼빨간사춘기, 백예린, 약동무지개, 윤하 ...
             </div>
@@ -189,11 +203,9 @@ function OwnerPlaylist() {
                 <button className="edit-button" onClick={handleCancel}>취소</button>
               </div>
             ) : (
-              <>
-                <button className="edit-button" onClick={toggleEdit}>
-                  재생목록 편집
-                </button>
-              </>
+              <button className="edit-button" onClick={toggleEdit}>
+                재생목록 편집
+              </button>
             )}
           </div>
           <table className="songs-table">
@@ -201,31 +213,29 @@ function OwnerPlaylist() {
               <tr>
                 <th>
                   <input
-                    className="check"
-                    type="checkbox"
-                    onChange={handleSelectAll}
+                    className="check" 
+                    type="checkbox" 
+                    onChange={handleSelectAll} 
                     checked={selectedSongs.length === songs.length}
                   />
                 </th>
-                <th>재생목록</th>
-                <th>아티스트</th>
-                <th>좋아요</th>
+                <th>Title</th>
+                <th>Channel</th>
+                <th>Like</th>
               </tr>
             </thead>
             <tbody>
               {songs.map((song) => (
-                <tr key={song.id}>
+                <tr key={song.playlistItemId}>
                   <td>
-                    <input
-                      type="checkbox"
-                      checked={selectedSongs.includes(song.id)}
-                      onChange={() => handleSongSelection(song.id)}
-                      disabled={!isEditing}
-                    />
+                    <input type="checkbox" 
+                    checked={selectedSongs.includes(song.playlistItemId)} 
+                    onChange={() => handleSongSelection(song.playlistItemId)} 
+                    disabled={!isEditing}/>
                   </td>
-                  <td>{song.title}</td>
-                  <td>{song.artist}</td>
-                  <td>♡{song.likes}</td>
+                  <td>{song.videoTitle}</td> 
+                  <td>{song.videoOwnerChannelTitle}</td> 
+                  <td>♡{song.like}</td>
                 </tr>
               ))}
             </tbody>

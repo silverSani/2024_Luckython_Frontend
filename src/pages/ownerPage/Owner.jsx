@@ -148,9 +148,9 @@ function Owner() {
           <div className="playlist-card" key={index}>
             <img
               className="playlist-thumbnail"
-              src={playlist.imageUrl}
-              alt={playlist.title}
-              onClick={() => handleThumbnailClick(playlist.playlistId)} // Add click handler
+              src={playlist.imageUrl || 'https://via.placeholder.com/150'} // 기본 이미지 URL
+              alt={playlist.title || 'Playlist Thumbnail'}
+              onClick={() => handleThumbnailClick(playlist.playlistId)}
             />
             <h3 className="playlist-name">{playlist.customTitle || playlist.title}</h3>
             {playlist.canModify}
