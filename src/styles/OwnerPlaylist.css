@@ -56,9 +56,20 @@
   text-align: center;
 }
 
+.playlist{
+  border-radius: 20px;
+  margin-top: 50px;
+  text-align: center;
+  width: 400px;
+  height: 400px;
+  cursor: pointer;
+  margin-left: 30px;
+  box-shadow: 5px 5px 5px 5px gray;
+}
+
 .playlist-description {
   text-align: center;
-  margin-top: 10px;
+  margin-top: 20px;
   margin-left: 50px;
 }
 
