@@ -1,0 +1,31 @@
+.save-my-playlist-button{
+    box-sizing: border-box;
+
+    padding:5px 8px; 
+    cursor: pointer;
+    margin-top: 20px;
+
+    background: rgba(255, 255, 255, 0.3);
+    border: 3px solid #A9A9C6;
+    border-radius: 8px;
+}
+
+.user-info-container {
+    margin-top: 3.5rem;
+    margin-bottom: 2rem;
+}
+
+
+.user-info-container img {
+    border-radius: 50%;
+    width: 33px;
+    height: 33px;
+}
+
+.info-row {
+    display: flex;
+    margin-left: auto;
+    gap: 10px;
+    margin-bottom: 30px;
+    align-items: center;
+}
