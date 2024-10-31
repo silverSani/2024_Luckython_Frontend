@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import '../../styles/OwnerPlaylist.css'; 
 import '../../styles/Owner.css';
 import Pin from "../../assets/pin1.png"
-import api from '../../api/api';
+import api from "services/api"
 import { FaUserGear, FaRegCirclePlay } from "react-icons/fa6";
 
 function OwnerPlaylist() {
@@ -63,16 +63,32 @@ function OwnerPlaylist() {
       });
   };
 
+  // 플레이리스트 삭제 함수
+  const deletePlaylist = () => {
+    api.delete(`/api/playlists/${playlist.id}`)
+      .then(response => {
+        console.log('플레이리스트 삭제 완료:', response.data);
+        setPlaylist({ title: '', id: '', isEditable: false }); // 플레이리스트 초기화
+        setSelectedSongs([]); // 선택된 노래 초기화
+      })
+      .catch(error => {
+        console.error('플레이리스트 삭제 중 오류 발생:', error);
+      });
+  };
+
+  // 핀 번호 입력 핸들러
   const handleInputChange = (e) => {
     setPinNumber(e.target.value);
   };
 
+  // Enter 키 눌림 핸들러
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
       console.log(`Searching for Pin: ${pinNumber}`);
     }
   };
 
+  // 노래 선택 핸들러
   const handleSongSelection = (id) => {
     if (selectedSongs.includes(id)) {
       setSelectedSongs(selectedSongs.filter(songId => songId !== id));
@@ -81,6 +97,7 @@ function OwnerPlaylist() {
     }
   };
 
+  // 전체 선택 핸들러
   const handleSelectAll = () => {
     if (selectedSongs.length === songs.length) {
       setSelectedSongs([]);
@@ -118,7 +135,6 @@ function OwnerPlaylist() {
 
   return (
     <div className="header">
-      {/* <Header/> */}
       <div className="header-container">
         <h1 className="logo">
           SoundP<span className="pinLogoContainer"><img className="pinLogo" src={Pin} alt="pinLogo" /></span>n
@@ -134,13 +150,11 @@ function OwnerPlaylist() {
         <FaUserGear style={{ fontSize: '30px', cursor: 'pointer' }}/>
       </div>
       <div className="ownerPlaylistContainer">
-
         <div className="playlistTitle">
           <div className='playlistHead'>
-            <FaRegCirclePlay style={{ fontSize: '40px', marginTop: '13px' }} />
-            <h1 className="playlistName">플레이리스트 이름</h1> {/* {playlist.title} */}
+            <FaRegCirclePlay style={{ fontSize: '40px', marginTop: '-3px' }} />
+            <h1 className="playlistName">{playlist.title || '플레이리스트 이름'}</h1>
           </div>
-
           <div className="playlist-cover">
             <img src="https://via.placeholder.com/150" alt="Playlist Cover" />
             <div className="playlist-description">
@@ -169,7 +183,6 @@ function OwnerPlaylist() {
         </div>
 
         <div className="columns">
-          {/* 재생목록 수정버튼 */}
           <div className="profile-edit">
             {isEditing ? (
               <div className='row'>
@@ -177,12 +190,13 @@ function OwnerPlaylist() {
                 <button className="edit-button" onClick={handleCancel}>취소</button>
               </div>
             ) : (
-              <button className="edit-button" onClick={toggleEdit}>
-                재생목록 편집
-              </button>
+              <>
+                <button className="edit-button" onClick={toggleEdit}>
+                  재생목록 편집
+                </button>
+              </>
             )}
           </div>
-          {/* 재생목록 */}
           <table className="songs-table">
             <thead>
               <tr>

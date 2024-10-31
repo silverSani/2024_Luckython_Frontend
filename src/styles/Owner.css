@@ -9,10 +9,12 @@
 }
 
 .header-container {
+  margin-top: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 70px;
+  margin-bottom: 30px;
 }
 
 .logo {
@@ -48,13 +50,11 @@
 
 .profile-image {
   border-radius: 80%;
-  width: 180px;
-  height: 180px;
+  width: 230px;
+  height: 230px;
   margin-left: 180px;
   margin-bottom: 100px;
 }
-
-
 
 .profile-name {
   margin-right: auto;
@@ -64,7 +64,7 @@
 .bio {
   font-size: 14px;
   margin-right: auto;
-  margin-top: -10px;
+  margin-top: 20px;
   color: gray;
 }
 
@@ -176,7 +176,7 @@ margin-left: auto;
 
 .row {
   display: flex;
-  margin-left: auto;
+  margin-left: 80%;
   gap: 10px;
   margin-bottom: 30px;
 }

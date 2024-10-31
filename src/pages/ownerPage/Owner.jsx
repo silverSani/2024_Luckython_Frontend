@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
-import Header from '../../components/Header';
-import api from '../../api/api';
 import '../../styles/Owner.css';
+import api from "services/api"
 import YouTube from "react-youtube";
 import Pin from "../../assets/pin1.png"
 import Me from '../../assets/Me.png';
@@ -20,12 +19,13 @@ function Owner() {
 
   const [playlists, setPlaylists] = useState([]);
   const [newPlaylistTitle, setNewPlaylistTitle] = useState('');
+  const [newPlaylistDescription, setNewPlaylistDescription] = useState('');
+
   const [pinNumber, setPinNumber] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [profileName, setProfileName] = useState('산이');
   const [editedName, setEditedName] = useState(profileName);
   const [description, setDescription] = useState('기분 전환을 위한 플레이리스트');
-
   const navigate = useNavigate();
 
   // 플레이리스트를 가져오는 함수
@@ -39,23 +39,25 @@ function Owner() {
       });
   }, []);
 
-  // 새로운 플레이리스트를 생성하는 함수
-  const createPlaylist = () => {
-    const newPlaylist = {
-      title: `[PIN] ${newPlaylistTitle}`,
-      description: 'description',
-      status: 'public'
+    // 플레이리스트 생성 함수
+    const createPlaylist = () => {
+      const requestBody = {
+        title: newPlaylistTitle,
+        description: newPlaylistDescription,
+        status: 'public', // 기본값으로 public 설정
+      };
+  
+      api.post('/api/playlists', requestBody)
+        .then(response => {
+          console.log('플레이리스트 생성 완료:', response.data);
+          // 성공적으로 생성 후 상태 초기화
+          setNewPlaylistTitle('');
+          setNewPlaylistDescription('');
+        })
+        .catch(error => {
+          console.error('플레이리스트 생성 중 오류 발생:', error);
+        });
     };
-    api.post('/api/playlists', newPlaylist)
-      .then(response => {
-        setPlaylists([...playlists, response.data]);
-        setNewPlaylistTitle(''); // 입력 필드 초기화
-        navigate('/OwnerPlaylist');
-      })
-      .catch(error => {
-        console.error('플레이리스트 생성 중 오류 발생:', error);
-      });
-  };
 
   const handleInputChange = (event) => {
     setPinNumber(event.target.value);
