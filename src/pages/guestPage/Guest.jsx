@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import '../../styles/OwnerPlaylist.css'; 
 import '../../styles/Owner.css';
-import Pin from "../../assets/pin1.png"
+import '../../styles/Guest.css';
+import Pin from "../../assets/soundpinLogo.png"
 import api from "services/api"
+import userImg from "../../assets/Me.png"
 import { FaRegCirclePlay } from "react-icons/fa6";
-import { FiLogOut } from "react-icons/fi";
+import { MdExitToApp } from "react-icons/md";
 
 function Guest() {
   const [pinNumber, setPinNumber] = useState('');
@@ -14,6 +16,7 @@ function Guest() {
   const [profileName, setProfileName] = useState('사용자 이름');
   const [playlist, setPlaylist] = useState({ title: '', id: '', isEditable: false }); 
   const [editedTitle, setEditedTitle] = useState('');
+  const [userInfo, setUserInfo] = useState({username : '사니', pin : '202309'})
 
   const songs = [
     { id: 1, title: '아 진짜 너무 졸리다', artist: '이지은 망명', likes: 1500 },
@@ -23,21 +26,21 @@ function Guest() {
   ];
 
   // 플레이리스트 데이터를 API로부터 가져오는 함수
-  useEffect(() => {
-    api.get('/api/playlists')
-      .then(response => {
-        const fetchedPlaylist = response.data[0]; // 첫 번째 플레이리스트를 가져온다고 가정
-        setPlaylist({
-          title: fetchedPlaylist.title,
-          id: fetchedPlaylist.id,
-          isEditable: fetchedPlaylist.isEditable,
-        });
-        setEditedTitle(fetchedPlaylist.title);
-      })
-      .catch(error => {
-        console.error('플레이리스트 로드 중 오류:', error);
-      });
-  }, []);
+  // useEffect(() => {
+  //   api.get('/api/playlists')
+  //     .then(response => {
+  //       const fetchedPlaylist = response.data[0]; // 첫 번째 플레이리스트를 가져온다고 가정
+  //       setPlaylist({
+  //         title: fetchedPlaylist.title,
+  //         id: fetchedPlaylist.id,
+  //         isEditable: fetchedPlaylist.isEditable,
+  //       });
+  //       setEditedTitle(fetchedPlaylist.title);
+  //     })
+  //     .catch(error => {
+  //       console.error('플레이리스트 로드 중 오류:', error);
+  //     });
+  // }, []);
 
   // 플레이리스트 제목을 업데이트하는 함수
   const updatePlaylistTitle = () => {
@@ -107,8 +110,8 @@ function Guest() {
     }
   };
 
-  const toggleEdit = () => {
-    setIsEditing(!isEditing);
+  const addPlaylistItem = () => {
+    
   };
 
   const handleSave = () => {
@@ -136,11 +139,13 @@ function Guest() {
 
   return (
     <div className="header">
-      <div className="header-container">
-        <h1 className="logo">
-          SoundP<span className="pinLogoContainer"><img className="pinLogo" src={Pin} alt="pinLogo" /></span>n
-        </h1>
-        <input
+        <div className="header-container">
+          <h1 className="logo">
+            <span className="pinLogoContainer">
+            <img className="pinLogo" src={Pin} alt="pinLogo" />
+            </span>
+          </h1>
+          <input
           className="search-bar"
           type="text"
           placeholder="Search using Pin..."
@@ -148,7 +153,7 @@ function Guest() {
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
         />
-        <FiLogOut style={{ fontSize: '30px', cursor: 'pointer' }}/>
+        <MdExitToApp style={{ fontSize: '30px', cursor: 'pointer' }} />
       </div>
       <div className="ownerPlaylistContainer">
         <div className="playlistTitle">
@@ -163,40 +168,52 @@ function Guest() {
             </div>
           </div>
 
-          <div className="ChangeBtn">
-            {isProfileEditing ? (
-              <>
-                <input
-                  type="text"
-                  value={profileName}
-                  onChange={(e) => setProfileName(e.target.value)}
-                  placeholder="프로필 이름 입력"
-                />
-                <div className='row'>
-                  <button className="edit-button" onClick={handleProfileSave}>저장</button>
-                  <button className="edit-button" onClick={handleProfileCancel}>취소</button>
-                </div>
-              </>
-            ) : (
-              <button className="edit-button" onClick={toggleProfileEdit}>수정하기</button>
-            )}
+          <div className="user-info-container">
+            <div className='info-row'>
+                <img src={userImg} alt="Playlist Cover" />
+                <p style={{
+                        fontFamily: 'Pretendard',
+                        fontStyle: 'normal',
+                        fontWeight: 500,
+                        fontSize: '15px',
+                        letterSpacing : 2
+                      }}>
+                      { userInfo.username } / PIN : {userInfo.pin}
+                </p>
+              </div>
           </div>
         </div>
 
         <div className="columns">
           <div className="profile-edit">
-            {isEditing ? (
-              <div className='row'>
-                <button className="edit-button" onClick={handleSave}>저장</button>
-                <button className="edit-button" onClick={handleCancel}>취소</button>
-              </div>
-            ) : (
               <>
-                <button className="edit-button" onClick={toggleEdit}>
-                  재생목록 편집
-                </button>
+              <div className = "row">
+                  <button className="save-my-playlist-button">
+                    <p style={{
+                      fontFamily: 'Pretendard',
+                      fontStyle: 'normal',
+                      fontWeight: 550,
+                      fontSize: '13px',
+                      lineHeight: '19px',
+                      textAlign: 'center'
+                    }}>
+                      내 Playlist에 저장
+                    </p>
+                  </button>
+                  <button className="edit-button" onClick={addPlaylistItem}>
+                  <p style={{
+                      fontFamily: 'Pretendard',
+                      fontStyle: 'normal',
+                      fontWeight: 550,
+                      fontSize: '13px',
+                      lineHeight: '19px',
+                      textAlign: 'center'
+                    }}>
+                      음원 추가
+                    </p>
+                  </button>
+              </div>
               </>
-            )}
           </div>
           <table className="songs-table">
             <thead>
