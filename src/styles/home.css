@@ -6,17 +6,18 @@
     text-align: center;
 }
 
-.logo {
-    max-width: 50rem; /* 로고 이미지 크기 조절 */
+.home-logo {
+    max-width: 50rem; /*로고 이미지 크기 조절*/
     margin-bottom: 8rem;
 }
 
-.search-bar {
+.search-bar-home {
     width: 80rem;
     margin-bottom: 2rem;
+    border: none;
 }
 
-.search-bar input {
+.search-bar-home input {
     width: 100%;
     padding: 0.8rem 1rem;
     font-size: 1.1rem;
