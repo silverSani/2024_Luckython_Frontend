@@ -5,6 +5,7 @@ import Pin from "../../assets/soundpinLogo.png"
 import api from "services/api"
 import { FaUserGear, FaRegCirclePlay } from "react-icons/fa6";
 import axios from 'axios';
+import YouTube from 'react-youtube';
 
 function OwnerPlaylist() {
   const [pinNumber, setPinNumber] = useState('');
@@ -15,13 +16,14 @@ function OwnerPlaylist() {
   const [playlist, setPlaylist] = useState({ title: '', id: '', isEditable: false }); 
   const [editedTitle, setEditedTitle] = useState('');
   const [songs, setSongs] = useState([]); // State to hold playlist items
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(0)
 
  //플레이리스트 데이터를 API로부터 가져오는 함수 
  useEffect(() => {
   let config = {
     method: 'get',
     maxBodyLength: Infinity,
-    url: 'http://3.36.76.110:8080/api/playlistItems/3',
+    url: 'http://3.36.76.110:8080/api/playlistItems/4',
     headers: {}
   };
 
@@ -42,8 +44,6 @@ function OwnerPlaylist() {
       console.log("API 호출 중 오류 발생:", error);
     });
 }, []);
-
-
 
   // 플레이리스트 제목을 업데이트하는 함수
   const updatePlaylistTitle = () => {
@@ -141,6 +141,29 @@ function OwnerPlaylist() {
     toggleProfileEdit();
   };
 
+  // Video end event handler to move to the next video
+  const handleVideoEnd = () => {
+    if (currentVideoIndex < songs.length - 1) {
+      setCurrentVideoIndex(currentVideoIndex + 1); // Move to the next video
+    } else {
+      setCurrentVideoIndex(0); // Loop back to the first video if at the end
+    }
+  };
+
+  // VideoPlayer component with end event listener
+  const VideoPlayer = ({ videoId }) => {
+    const options = {
+      width: '400',
+      height: '300',
+      playerVars: {
+        autoplay: 1, 
+      },
+    };
+
+    return <YouTube videoId={videoId} opts={options} onEnd={handleVideoEnd} />;
+  };
+
+
   return (
     <div className="header">
       <div className="header-container">
@@ -162,16 +185,16 @@ function OwnerPlaylist() {
       <div className="ownerPlaylistContainer">
         <div className="playlistTitle">
           <div className='playlistHead'>
-            <FaRegCirclePlay style={{ fontSize: '40px', marginTop: '-3px' }} />
-            <h1 className="playlistName">{playlist.title || '플레이리스트 이름'}</h1>
+            <FaRegCirclePlay style={{ fontSize: '40px', marginTop: '-5px' }} />
+            <h1 className="playlistName">My Playlist</h1>
           </div>
+
+          
           <div className="playlist-cover">
-            <div className='playlist'/>
-           
-           
-           
-            <div className="playlist-description">
-              아이유, 태연, 볼빨간사춘기, 백예린, 약동무지개, 윤하 ...
+            <div className="playlist">
+              {songs.length > 0 && (
+                <VideoPlayer videoId={songs[currentVideoIndex].videoId} /> 
+              )}
             </div>
           </div>
 
