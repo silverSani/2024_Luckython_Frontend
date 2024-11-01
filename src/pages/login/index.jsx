@@ -44,6 +44,8 @@ function LoginPage() {
       .request(config)
       .then((response) => {
         if (response.status === 200) {
+          console.log(response);
+          console.log("로그인 성공");
           toast.success("로그인 성공!");
 
           if (rememberMe) {
@@ -58,10 +60,8 @@ function LoginPage() {
         }
       })
       .catch((error) => {
-        if (
-          error.response &&
-          error.response.data.message === "Invalid credentials"
-        ) {
+        if (error.response && error.response.status === 401) {
+          // 서버에서 잘못된 인증 정보를 401 상태로 보낼 경우
           toast.error("아이디 또는 비밀번호가 잘못되었습니다.");
         } else {
           toast.error("서버 연결에 실패했습니다.");
