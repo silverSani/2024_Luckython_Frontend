@@ -172,7 +172,6 @@ function OwnerPlaylist() {
       setCurrentVideoIndex(0); 
     }
   };
-
  
   const VideoPlayer = ({ videoId }) => {
     const options = {
