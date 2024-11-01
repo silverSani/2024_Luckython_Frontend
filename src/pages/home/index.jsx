@@ -23,28 +23,37 @@ export default function Home() {
       return;
     }
 
-    const config = {
-      method: "get",
-      maxBodyLength: Infinity,
-      url: `/api/playlistItems/${searchQuery}`,
-      headers: {},
-    };
-
-    try {
-      const response = await axios(config); // 서버에 요청 전송
-      const data = response.data;
-      console.log("API 응답:", data);
-
-      if (data.success) {
-        localStorage.setItem("guestData", JSON.stringify(data.data)); // 서버로부터 받은 데이터를 저장
-        navigate("/Guest"); // /Guest 페이지로 이동
-      } else {
-        toast.error("유효하지 않은 핀 번호입니다.");
-      }
-    } catch (error) {
-      console.error("핀 데이터를 불러오는 중 오류 발생:", error);
-      toast.error("서버와의 통신에 실패했습니다.");
+    // 숫자로만 이루어져 있는지 검사
+    if (/^\d+$/.test(searchQuery)) {
+      // 검색어가 숫자로만 이루어졌다면 `/Guest` 페이지로 navigate
+      navigate(`/Guest?pin=${searchQuery}`);
+    } else {
+      // 검색어가 숫자가 아닌 경우 `/owner` 페이지로 navigate
+      navigate(`/owner?pin=${searchQuery}`);
     }
+
+    // const config = {
+    //   method: "get",
+    //   maxBodyLength: Infinity,
+    //   url: `/api/playlistItems/${searchQuery}`,
+    //   headers: {},
+    // };
+
+    // try {
+    //   const response = await axios(config); // 서버에 요청 전송
+    //   const data = response.data;
+    //   console.log("API 응답:", data);
+
+    //   if (data.success) {
+    //     localStorage.setItem("guestData", JSON.stringify(data.data)); // 서버로부터 받은 데이터를 저장
+    //     navigate("/Guest"); // /Guest 페이지로 이동
+    //   } else {
+    //     toast.error("유효하지 않은 핀 번호입니다.");
+    //   }
+    // } catch (error) {
+    //   console.error("핀 데이터를 불러오는 중 오류 발생:", error);
+    //   toast.error("서버와의 통신에 실패했습니다.");
+    // }
   };
 
   const handleKeyPress = (e) => {
