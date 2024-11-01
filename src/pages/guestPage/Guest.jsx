@@ -8,6 +8,7 @@ import userImg from "../../assets/Me.png"
 import { FaRegCirclePlay } from "react-icons/fa6";
 import { MdExitToApp } from "react-icons/md";
 import axios from 'axios';
+import {useNavigate} from 'react-router-dom';
 
 function Guest() {
   const [pinNumber, setPinNumber] = useState('');
@@ -19,6 +20,7 @@ function Guest() {
   const [editedTitle, setEditedTitle] = useState('');
   const [userInfo, setUserInfo] = useState({username : '사니', pin : '202309'})
   const [songs, setSongs] = useState([]); // State to hold playlist items
+  const navigate = useNavigate();
 
   useEffect(() => {
     let config = {
@@ -115,7 +117,8 @@ function Guest() {
   };
 
   const addPlaylistItem = () => {
-    
+    navigate("/Item");
+    localStorage.setItem("len", songs.length-1);
   };
 
   const handleSave = () => {

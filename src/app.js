@@ -7,6 +7,7 @@ import Owner from "pages/ownerPage/Owner";
 import OwnerPlaylist from "pages/ownerPage/OwnerPlaylist";
 import Guest from "pages/guestPage/Guest"
 import LoginBase from "layouts/LoginBase";
+import Item from "pages/guestPage/Item"
 
 export default function App() {
   return (
@@ -19,6 +20,7 @@ export default function App() {
       <Route path="/Owner" element={<Owner />}></Route>
       <Route path="/OwnerPlaylist" element={<OwnerPlaylist />}></Route> 
       <Route path="/Guest" element={<Guest />}></Route> 
+      <Route path="/Item" element={<Item/>}></Route>
     </Routes>
   );
 }
