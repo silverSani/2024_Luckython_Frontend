@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import '../../styles/OwnerPlaylist.css'; 
+import '../../styles/OwnerPlaylist.css';
 import '../../styles/Owner.css';
 import Pin from "../../assets/soundpinLogo.png"
 import api from "services/api"
@@ -13,37 +13,53 @@ function OwnerPlaylist() {
   const [isEditing, setIsEditing] = useState(false);
   const [isProfileEditing, setIsProfileEditing] = useState(false);
   const [profileName, setProfileName] = useState('사용자 이름');
-  const [playlist, setPlaylist] = useState({ title: '', id: '', isEditable: false }); 
+  const [playlist, setPlaylist] = useState({ title: '', id: '', isEditable: false });
   const [editedTitle, setEditedTitle] = useState('');
   const [songs, setSongs] = useState([]); // State to hold playlist items
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0)
 
- //플레이리스트 데이터를 API로부터 가져오는 함수 
- useEffect(() => {
-  let config = {
-    method: 'get',
-    maxBodyLength: Infinity,
-    url: 'http://3.36.76.110:8080/api/playlistItems/4',
-    headers: {}
-  };
+  //플레이리스트 데이터를 API로부터 가져오는 함수 
+  useEffect(() => {
+    let config = {
+      method: 'get',
+      maxBodyLength: Infinity,
+      url: 'http://3.36.76.110:8080/api/playlistItems/4',
+      headers: {}
+    };
 
-  axios.request(config)
-    .then((response) => {
-      console.log(JSON.stringify(response.data));
-      
-      // 응답 데이터에서 dataList 배열을 가져오기
-      const playlistName = response.data.dataList;
-      if (Array.isArray(playlistName)) {
-        setSongs(playlistName); 
-      } else {
-        console.error("응답 데이터가 배열이 아닙니다:", playlistName);
-        setSongs([]); // 배열이 아닌 경우 빈 배열로 초기화
-      }
-    })
-    .catch((error) => {
-      console.log("API 호출 중 오류 발생:", error);
-    });
-}, []);
+    axios.request(config)
+      .then((response) => {
+        console.log(JSON.stringify(response.data));
+
+        // 응답 데이터에서 dataList 배열을 가져오기
+        const playlistName = response.data.dataList;
+        if (Array.isArray(playlistName)) {
+          setSongs(playlistName);
+        } else {
+          console.error("응답 데이터가 배열이 아닙니다:", playlistName);
+          setSongs([]); // 배열이 아닌 경우 빈 배열로 초기화
+        }
+      })
+      .catch((error) => {
+        console.log("API 호출 중 오류 발생:", error);
+      });
+
+    let config_playlist = {
+      method: 'get',
+      maxBodyLength: Infinity,
+      url: 'http://3.36.76.110:8080/api/playlists/4',
+      headers: {}
+    };
+
+    axios.request(config_playlist)
+      .then((response) => {
+        console.log(JSON.stringify(response.data));
+        setPlaylist(response.data.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   // 플레이리스트 제목을 업데이트하는 함수
   const updatePlaylistTitle = () => {
@@ -156,7 +172,7 @@ function OwnerPlaylist() {
       width: '400',
       height: '300',
       playerVars: {
-        autoplay: 1, 
+        autoplay: 1,
       },
     };
 
@@ -186,36 +202,49 @@ function OwnerPlaylist() {
         <div className="playlistTitle">
           <div className='playlistHead'>
             <FaRegCirclePlay style={{ fontSize: '40px', marginTop: '-5px' }} />
-            <h1 className="playlistName">My Playlist</h1>
+            <h1 className="playlistName">{playlist.title || '플레이리스트 이름'}</h1>
           </div>
-
-          
           <div className="playlist-cover">
             <div className="playlist">
               {songs.length > 0 && (
-                <VideoPlayer videoId={songs[currentVideoIndex].videoId} /> 
+                <VideoPlayer videoId={songs[currentVideoIndex].videoId} />
               )}
+            </div>
+
+            <div className="playlist-description">
+              <p style={{
+                fontFamily: 'Pretendard',
+                fontStyle: 'normal',
+                fontWeight: 550,
+                fontSize: '25px',
+                lineHeight: '50px',
+                textAlign: 'center'
+              }}>
+                {playlist.description || '플레이리스트 설명'}
+              </p>
             </div>
           </div>
 
-          <div className="ChangeBtn">
-            {isProfileEditing ? (
-              <>
-                <input
-                  type="text"
-                  value={profileName}
-                  onChange={(e) => setProfileName(e.target.value)}
-                  placeholder="프로필 이름 입력"
-                />
-                <div className='row'>
-                  <button className="edit-button" onClick={handleProfileSave}>저장</button>
-                  <button className="edit-button" onClick={handleProfileCancel}>취소</button>
-                </div>
-              </>
-            ) : (
-              <button className="edit-button" onClick={toggleProfileEdit}>수정하기</button>
-            )}
-          </div>
+        <div className="ChangeBtn">
+          {isProfileEditing ? (
+            <>
+              <input
+                type="text"
+                value={profileName}
+                onChange={(e) => {
+                  setProfileName(e.target.value)
+                }}
+                placeholder="프로필 이름 입력"
+              />
+              <div className='row'>
+                <button className="edit-button" onClick={handleProfileSave}>저장</button>
+                <button className="edit-button" onClick={handleProfileCancel}>취소</button>
+              </div>
+            </>
+          ) : (
+            <button className="edit-button" onClick={() => toggleProfileEdit}>수정하기</button>
+          )}
+        </div>
         </div>
 
         <div className="columns">
@@ -236,9 +265,9 @@ function OwnerPlaylist() {
               <tr>
                 <th>
                   <input
-                    className="check" 
-                    type="checkbox" 
-                    onChange={handleSelectAll} 
+                    className="check"
+                    type="checkbox"
+                    onChange={handleSelectAll}
                     checked={selectedSongs.length === songs.length}
                   />
                 </th>
@@ -251,13 +280,13 @@ function OwnerPlaylist() {
               {songs.map((song) => (
                 <tr key={song.playlistItemId}>
                   <td>
-                    <input type="checkbox" 
-                    checked={selectedSongs.includes(song.playlistItemId)} 
-                    onChange={() => handleSongSelection(song.playlistItemId)} 
-                    disabled={!isEditing}/>
+                    <input type="checkbox"
+                      checked={selectedSongs.includes(song.playlistItemId)}
+                      onChange={() => handleSongSelection(song.playlistItemId)}
+                      disabled={!isEditing} />
                   </td>
-                  <td>{song.videoTitle}</td> 
-                  <td>{song.videoOwnerChannelTitle}</td> 
+                  <td>{song.videoTitle}</td>
+                  <td>{song.videoOwnerChannelTitle}</td>
                   <td>♡{song.like}</td>
                 </tr>
               ))}

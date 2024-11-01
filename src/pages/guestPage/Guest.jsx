@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useInsertionEffect, useState } from 'react';
 import '../../styles/OwnerPlaylist.css'; 
 import '../../styles/Owner.css';
 import '../../styles/Guest.css';
@@ -9,28 +9,27 @@ import { FaRegCirclePlay } from "react-icons/fa6";
 import { MdExitToApp } from "react-icons/md";
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom';
+import userEvent from '@testing-library/user-event';
 
 function Guest() {
   const [pinNumber, setPinNumber] = useState('');
   const [selectedSongs, setSelectedSongs] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
-  const [isProfileEditing, setIsProfileEditing] = useState(false);
-  const [profileName, setProfileName] = useState('사용자 이름');
-  const [playlist, setPlaylist] = useState({ title: '', id: '', isEditable: false }); 
+  const [playlist, setPlaylist] = useState([]); 
   const [editedTitle, setEditedTitle] = useState('');
   const [userInfo, setUserInfo] = useState({username : '사니', pin : '202309'})
   const [songs, setSongs] = useState([]); // State to hold playlist items
   const navigate = useNavigate();
 
   useEffect(() => {
-    let config = {
+    let config_item = {
       method: 'get',
       maxBodyLength: Infinity,
       url: 'http://3.36.76.110:8080/api/playlistItems/6',
       headers: {}
     };
   
-    axios.request(config)
+    axios.request(config_item)
       .then((response) => {
         console.log(JSON.stringify(response.data));
         
@@ -45,6 +44,22 @@ function Guest() {
       })
       .catch((error) => {
         console.log("API 호출 중 오류 발생:", error);
+      });
+
+      let config_playlist = {
+        method: 'get',
+        maxBodyLength: Infinity,
+        url: 'http://3.36.76.110:8080/api/playlists/6',
+        headers: { }
+      };
+      
+      axios.request(config_playlist)
+      .then((response) => {
+        console.log(JSON.stringify(response.data));
+        setPlaylist(response.data.data);
+      })
+      .catch((error) => {
+        console.log(error);
       });
   }, []);
 
@@ -130,20 +145,6 @@ function Guest() {
     setEditedTitle(playlist.title);
   };
 
-  const toggleProfileEdit = () => {
-    setIsProfileEditing(!isProfileEditing);
-  };
-
-  const handleProfileSave = () => {
-    console.log('Saved profile name:', profileName);
-    toggleProfileEdit();
-  };
-
-  const handleProfileCancel = () => {
-    setProfileName('사용자 이름');
-    toggleProfileEdit();
-  };
-
   return (
     <div className="header">
         <div className="header-container">
@@ -174,7 +175,16 @@ function Guest() {
            
            
             <div className="playlist-description">
-              아이유, 태연, 볼빨간사춘기, 백예린, 약동무지개, 윤하 ...
+                <p style={{
+                      fontFamily: 'Pretendard',
+                      fontStyle: 'normal',
+                      fontWeight: 550,
+                      fontSize: '25px',
+                      lineHeight: '50px',
+                      textAlign: 'center'
+                    }}>
+                      {playlist.description || '플레이리스트 설명'}
+                  </p>
             </div>
           </div>
 
