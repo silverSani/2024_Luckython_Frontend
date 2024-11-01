@@ -211,6 +211,7 @@ function OwnerPlaylist() {
       <div className="ownerPlaylistContainer">
         <div className="playlistTitle">
           <div className="playlistHead">
+            <FaRegCirclePlay style={{ fontSize: "40px", marginTop: "25px" }} />
             <h1 className="playlistName">
               {playlist.title || "플레이리스트 이름"}
             </h1>
