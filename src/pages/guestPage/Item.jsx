@@ -2,45 +2,45 @@ import React, { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { AiOutlineClose } from "react-icons/ai"; // X 아이콘 import
 import "react-toastify/dist/ReactToastify.css";
 import "styles/login.css";
 
-function LoginPage() {
-  const [username, setUsername] = useState(""); 
+function AddMusic({ closeModal }) {
+  const [username, setUsername] = useState("");
   const [videoUrl, setVideoUrl] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
-  const [position, setPosition] = useState(1); // Default position as number
-  const [playlistId, setPlaylistId] = useState("PLCnwzD94RuGCzkz-_VKsDK1KJ8ecc3U7L");
+  const [position, setPosition] = useState(1);
+  const [playlistId, setPlaylistId] = useState(
+    "PLCnwzD94RuGCzkz-_VKsDK1KJ8ecc3U7L"
+  );
   const navigate = useNavigate();
 
-  // Load saved username and position on page load
   useEffect(() => {
     const savedUsername = localStorage.getItem("rememberedUsername");
     if (savedUsername) {
       setUsername(savedUsername);
       setRememberMe(true);
     }
-    const pos = Number(localStorage.getItem("len")) || 1; 
-    setPosition(pos || 1); // Set to 1 if pos is null or undefined
+    const pos = Number(localStorage.getItem("len")) || 1;
+    setPosition(pos || 1);
   }, []);
 
   const addPlaylistItem = async (videoUrl, playlistId, position) => {
-    console.log("here");
-    console.log(videoUrl, playlistId, position);
     let data = JSON.stringify({
-      "playlistId": playlistId,
-      "videoUrl": videoUrl,
-      "position": position
+      playlistId,
+      videoUrl,
+      position,
     });
 
     let config = {
-      method: 'post',
+      method: "post",
       maxBodyLength: Infinity,
-      url: 'http://3.36.76.110:8080/api/playlistItems',
+      url: "http://3.36.76.110:8080/api/playlistItems",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
-      data: data
+      data,
     };
 
     try {
@@ -52,13 +52,26 @@ function LoginPage() {
   };
 
   const handleSliderChange = (event) => {
-    setPosition(event.target.valueAsNumber); // Ensure it stays as a number
+    setPosition(event.target.valueAsNumber);
   };
 
   return (
     <div className="login-container">
-      <div className="container">
+      <div className="container" style={{ position: "relative" }}>
         <ToastContainer />
+        {}
+        <div
+          style={{
+            position: "absolute",
+            top: "40px",
+            right: "10px",
+            cursor: "pointer",
+            color: "#333",
+          }}
+          onClick={closeModal}
+        >
+          <AiOutlineClose size={24} />
+        </div>
         <div className="content-left">
           <div>
             <p>
@@ -83,23 +96,24 @@ function LoginPage() {
           </div>
           <div className="inputGroup">
             <label htmlFor="numeric-slider"> 몇 번에 넣을 건가요? </label>
-            <div style={{ padding: '5px', textAlign: 'left' }}>
+            <div style={{ padding: "5px", textAlign: "left" }}>
               <input
                 type="range"
                 min={1}
-                max={4} // 여기 고쳐야 함
-                value={position} // `position` is now a number
+                max={position}
+                value={position}
                 onChange={handleSliderChange}
-                style={{ width: '100%' }}
+                style={{ width: "100%" }}
               />
             </div>
             <label> {position} 번 </label>
           </div>
+
           <button
             onClick={(event) => {
-              event.preventDefault(); // Prevent default form submission behavior
-              addPlaylistItem(videoUrl, playlistId, position-1);
-              navigate("/Guest");
+              event.preventDefault();
+              addPlaylistItem(videoUrl, playlistId, position - 1);
+              closeModal();
             }}
             className="loginButton"
           >
@@ -111,4 +125,4 @@ function LoginPage() {
   );
 }
 
-export default LoginPage;
+export default AddMusic;

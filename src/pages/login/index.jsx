@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import '../../styles/item.css';
-
-
+import api from "services/api";
+import "../../styles/item.css";
 import "react-toastify/dist/ReactToastify.css";
 import "styles/login.css";
 
@@ -22,55 +21,53 @@ function LoginPage() {
     }
   }, []);
 
-  const handleLogin = async () => {
-    const apiUrl = process.env.REACT_APP_BACKEND_API_URL;
-    //이건 연결되면 지우셈
-    // setTimeout(() => {
-    //   navigate("/Owner"); // 성공 후 이동할 경로
-    // }, 500); // 성공 메시지 후 1초 뒤 이동
-
-    //--서버연결--
-
+  const handleLogin = () => {
     if (!username.trim() || !password.trim()) {
-      // 입력 필드 빈칸 검증
       toast.error("모두 입력해주세요.");
       return;
     }
 
-    try {
-      const response = await fetch(`${apiUrl}/api/users`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, password }),
-      });
+    const config = {
+      method: "post",
+      maxBodyLength: Infinity,
+      url: "/api/user/signIn",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: {
+        username: username,
+        password: password,
+      },
+    };
 
-      const data = await response.json();
+    api
+      .request(config)
+      .then((response) => {
+        if (response.status === 200) {
+          toast.success("로그인 성공!");
 
-      if (response.ok) {
-        toast.success("로그인 성공!");
-        console.log("로그인 성공:", data);
+          if (rememberMe) {
+            localStorage.setItem("rememberedUsername", username);
+          } else {
+            localStorage.removeItem("rememberedUsername");
+          }
 
-        if (rememberMe) {
-          localStorage.setItem("rememberedUsername", username);
-        } else {
-          localStorage.removeItem("rememberedUsername");
+          setTimeout(() => {
+            navigate("/Owner");
+          }, 500);
         }
-
-        setTimeout(() => {
-          navigate("/"); // 성공 후 이동할 경로
-        }, 500); // 성공 메시지 후 1초 뒤 이동
-      } else {
-        if (data.message === "Invalid credentials") {
+      })
+      .catch((error) => {
+        if (
+          error.response &&
+          error.response.data.message === "Invalid credentials"
+        ) {
           toast.error("아이디 또는 비밀번호가 잘못되었습니다.");
         } else {
-          toast.error("로그인 중 오류가 발생했습니다.");
+          toast.error("서버 연결에 실패했습니다.");
+          console.error("로그인 중 오류 발생:", error);
         }
-      }
-    } catch (error) {
-      toast.error("서버 연결에 실패했습니다.");
-    }
+      });
   };
 
   return (

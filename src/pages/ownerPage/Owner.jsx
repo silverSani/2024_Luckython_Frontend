@@ -1,21 +1,14 @@
 import { useEffect, useState } from 'react';
 import '../../styles/Owner.css';
 import api from "services/api";
-import Pin from "../../assets/soundpinLogo.png"
+import axios from 'axios'; // axios import 추가
+import Pin from "../../assets/soundpinLogo.png";
 import Me from '../../assets/Me.png';
 import { FaUserGear } from "react-icons/fa6";
 import { useNavigate } from 'react-router-dom';
 
 function Owner() {
-  const options = {
-    width: "300",
-    height: "200",
-    playerVars: { autoplay: 0 },
-  };
-
   const [playlists, setPlaylists] = useState([]);
-  const [newPlaylistTitle, setNewPlaylistTitle] = useState('');
-  const [newPlaylistDescription, setNewPlaylistDescription] = useState('');
   const [pinNumber, setPinNumber] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [profileName, setProfileName] = useState('산이');
@@ -26,9 +19,7 @@ function Owner() {
   useEffect(() => {
     const config = {
       method: 'get',
-      maxBodyLength: Infinity,
       url: '/api/playlists',
-      headers: {},
     };
 
     api.request(config)
@@ -43,25 +34,44 @@ function Owner() {
   }, []);
 
   const createPlaylist = () => {
-    const requestBody = {
-      title: newPlaylistTitle,
-      description: newPlaylistDescription,
-      status: 'public',
+    const data = JSON.stringify({
+      title: "[PIN] public",
+      description: "description",
+      status: "public"
+    });
+
+    const config = {
+      method: 'post',
+      maxBodyLength: Infinity,
+      url: 'http://3.36.76.110:8080/api/playlists',
+      headers: { 
+        'Content-Type': 'application/json'
+      },
+      data: data
     };
 
-    api.post('/api/playlists', requestBody)
-      .then(response => {
-        setNewPlaylistTitle('');
-        setNewPlaylistDescription('');
-        setPlaylists(prev => [...prev, response.data]);
+    return axios.request(config)
+      .then((response) => {
+        console.log("플레이리스트 생성 성공:", response.data);
+        return response.data;
       })
-      .catch(error => {
-        if (error.response) {
-          console.error('Error creating playlist:', error.response.data);
-        } else {
-          console.error('Error creating playlist:', error);
-        }
+      .catch((error) => {
+        console.error("플레이리스트 생성 중 오류:", error);
+        return null;
       });
+  };
+
+  const addNewCard = async () => {
+    const newPlaylistData = await createPlaylist();
+    if (newPlaylistData) {
+      const newPlaylist = {
+        title: newPlaylistData.title,
+        description: newPlaylistData.description,
+        imageUrl: 'https://via.placeholder.com/150',
+        videoId: ''
+      };
+      setPlaylists([...playlists, newPlaylist]);
+    }
   };
 
   const handleInputChange = (event) => {
@@ -72,10 +82,6 @@ function Owner() {
     if (event.key === 'Enter') {
       console.log("Searching for PIN:", pinNumber);
     }
-  };
-
-  const handleIconClick = () => {
-    navigate('/OwnerPlaylist');
   };
 
   const toggleEdit = () => {
@@ -94,19 +100,18 @@ function Owner() {
   };
 
   const handleThumbnailClick = (playlistId) => {
-    // Navigate to the OwnerPlaylist page, possibly passing the playlistId as a state
     navigate('/OwnerPlaylist', { state: { playlistId } });
   };
 
   return (
-      <div className="header">
-        <div className="header-container">
-          <h1 className="logo">
-            <span className="pinLogoContainer">
+    <div className="header">
+      <div className="header-container">
+        <h1 className="logo">
+          <span className="pinLogoContainer">
             <img className="pinLogo" src={Pin} alt="pinLogo" />
-            </span>
-          </h1>
-          <input
+          </span>
+        </h1>
+        <input
           className="search-bar"
           type="text"
           placeholder="Search using Pin..."
@@ -128,7 +133,7 @@ function Owner() {
                 onChange={(e) => setEditedName(e.target.value)}
                 className="edit"
               />
-              <div className='row'>
+              <div className="row" style={{ justifyContent: 'flex-end' }}>
                 <button className="edit-button" onClick={handleCancel}>취소</button>
                 <button className="edit-button" onClick={handleSave}>저장</button>
               </div>
@@ -148,14 +153,17 @@ function Owner() {
           <div className="playlist-card" key={index}>
             <img
               className="playlist-thumbnail"
-              src={playlist.imageUrl}
+              src={playlist.imageUrl || 'https://via.placeholder.com/150'}
               alt={playlist.title}
-              onClick={() => handleThumbnailClick(playlist.playlistId)} 
+              onClick={() => handleThumbnailClick(playlist.playlistId)}
             />
             <h3 className="playlist-name">{playlist.customTitle || playlist.title}</h3>
-            {playlist.canModify}
+            {playlist.canModify && <div className="modify-badge">수정 가능</div>}
           </div>
         ))}
+        <div className="playlist-card add-card" onClick={addNewCard}>
+          <div className="add-icon">+</div>
+        </div>
       </div>
     </div>
   );

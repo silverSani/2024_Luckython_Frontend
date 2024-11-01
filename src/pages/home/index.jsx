@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "styles/home.css";
+import axios from "axios";
+import api from "services/api";
 
 export default function Home() {
   const [fadeOut, setFadeOut] = useState(false);
@@ -16,43 +18,38 @@ export default function Home() {
   }, []);
 
   const handleSearch = async () => {
-    const apiUrl = process.env.REACT_APP_BACKEND_API_URL;
     if (!searchQuery.trim()) {
       toast.error("검색어를 입력해주세요.");
       return;
     }
 
-    try {
-      const response = await fetch(`${apiUrl}/api/users/{pin}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ query: searchQuery }),
-      });
+    const config = {
+      method: "get",
+      maxBodyLength: Infinity,
+      url: `/api/playlistItems/${searchQuery}`,
+      headers: {},
+    };
 
-      if (response.ok) {
-        const data = await response.json();
-        toast.success("검색 결과를 찾았습니다!");
-        navigate(`/owner/${data.pageName}`);
+    try {
+      const response = await axios(config); // 서버에 요청 전송
+      const data = response.data;
+      console.log("API 응답:", data);
+
+      if (data.success) {
+        localStorage.setItem("guestData", JSON.stringify(data.data)); // 서버로부터 받은 데이터를 저장
+        navigate("/Guest"); // /Guest 페이지로 이동
       } else {
-        // 서버 연결 성공했지만 응답이 실패한 경우
-        const data = await response.json();
-        if (data.message === "No results found") {
-          toast.error("검색 결과를 찾을 수 없습니다.");
-        } else {
-          toast.error("검색 중 오류가 발생했습니다.");
-        }
+        toast.error("유효하지 않은 핀 번호입니다.");
       }
     } catch (error) {
-      // 서버 연결 자체가 실패한 경우
-      toast.error("서버 연결에 실패했습니다.");
-      console.error("서버 연결에 실패했습니다.", error);
+      console.error("핀 데이터를 불러오는 중 오류 발생:", error);
+      toast.error("서버와의 통신에 실패했습니다.");
     }
   };
 
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
+      localStorage.setItem("pin", searchQuery);
       handleSearch();
     }
   };
@@ -62,7 +59,11 @@ export default function Home() {
       <ToastContainer />
       <div className={`fade-overlay ${fadeOut ? "fade-out" : ""}`} />
       <div className="containerhome">
-        <img src="/images/soundpin.png" alt="SoundPin Logo" className="home-logo" />
+        <img
+          src="/images/soundpin.png"
+          alt="SoundPin Logo"
+          className="home-logo"
+        />
         <div className="search-bar-home">
           <input
             type="text"
