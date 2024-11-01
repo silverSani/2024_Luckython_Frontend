@@ -11,7 +11,7 @@ function SignUpPage() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [nickname, setNickname] = useState("");
-  const [bio, setBio] = useState("");
+  const [comment, setComment] = useState("");
   const navigate = useNavigate();
 
   const handleNextStep = () => {
@@ -55,7 +55,7 @@ function SignUpPage() {
         username: username,
         password: password,
         nickname: nickname,
-        bio: bio,
+        comment: comment,
       },
     };
 
@@ -142,8 +142,8 @@ function SignUpPage() {
               <label>소개 문구</label>
               <input
                 type="text"
-                value={bio}
-                onChange={(e) => setBio(e.target.value)}
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
                 className="input"
               />
             </div>
