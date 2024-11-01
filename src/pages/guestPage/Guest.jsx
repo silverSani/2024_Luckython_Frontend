@@ -235,48 +235,52 @@ function Guest() {
                 </div>
               </>
             </div>
-            <table className="songs-table">
-              <thead>
-                <tr>
-                  <th>
-                    <input
-                      className="check"
-                      type="checkbox"
-                      onChange={handleSelectAll}
-                      checked={selectedSongs.length === songs.length}
-                    />
-                  </th>
-                  <th>Title</th>
-                  <th>Channel</th>
-                  <th>Like</th>
-                </tr>
-              </thead>
-              <tbody>
-                {songs.length > 0 ? (
-                  songs.map((song) => (
-                    <tr key={song.playlistItemId}>
-                      <td>
-                        <input
-                          type="checkbox"
-                          checked={selectedSongs.includes(song.playlistItemId)}
-                          onChange={() =>
-                            handleSongSelection(song.playlistItemId)
-                          }
-                          disabled={!isEditing}
-                        />
-                      </td>
-                      <td>{song.videoTitle}</td>
-                      <td>{song.videoOwnerChannelTitle}</td>
-                      <td>♡{song.like}</td>
-                    </tr>
-                  ))
-                ) : (
+            <div className="songs-table-container">
+              <table className="songs-table">
+                <thead>
                   <tr>
-                    <td colSpan="4">No songs available</td>
+                    <th>
+                      <input
+                        className="check"
+                        type="checkbox"
+                        onChange={handleSelectAll}
+                        checked={selectedSongs.length === songs.length}
+                      />
+                    </th>
+                    <th>Title</th>
+                    <th>Channel</th>
+                    <th>Like</th>
                   </tr>
-                )}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {songs.length > 0 ? (
+                    songs.map((song) => (
+                      <tr key={song.playlistItemId}>
+                        <td>
+                          <input
+                            type="checkbox"
+                            checked={selectedSongs.includes(
+                              song.playlistItemId
+                            )}
+                            onChange={() =>
+                              handleSongSelection(song.playlistItemId)
+                            }
+                            disabled={!isEditing}
+                          />
+                        </td>
+                        <td>{song.videoTitle}</td>
+                        <td>{song.videoOwnerChannelTitle}</td>
+                        <td>♡{song.like}</td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan="4">No songs available</td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       )}

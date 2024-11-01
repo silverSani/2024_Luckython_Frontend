@@ -12,10 +12,14 @@ function OwnerPlaylist() {
   const [selectedSongs, setSelectedSongs] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [isProfileEditing, setIsProfileEditing] = useState(false);
-  const [profileName, setProfileName] = useState('사용자 이름');
-  const [playlist, setPlaylist] = useState({ title: '', id: '', isEditable: false });
-  const [editedTitle, setEditedTitle] = useState('');
-  const [songs, setSongs] = useState([]); 
+  const [profileName, setProfileName] = useState("사용자 이름");
+  const [playlist, setPlaylist] = useState({
+    title: "",
+    id: "",
+    isEditable: false,
+  });
+  const [editedTitle, setEditedTitle] = useState("");
+  const [songs, setSongs] = useState([]);
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
 
   //플레이리스트 데이터를 API로부터 가져오는 함수
@@ -63,7 +67,6 @@ function OwnerPlaylist() {
       });
   }, []);
 
-  
   // 플레이리스트 제목을 업데이트하는 함수
   const updatePlaylistTitle = () => {
     api
@@ -167,12 +170,12 @@ function OwnerPlaylist() {
 
   const handleVideoEnd = () => {
     if (currentVideoIndex < songs.length - 1) {
-      setCurrentVideoIndex(currentVideoIndex + 1); 
+      setCurrentVideoIndex(currentVideoIndex + 1);
     } else {
-      setCurrentVideoIndex(0); 
+      setCurrentVideoIndex(0);
     }
   };
- 
+
   const VideoPlayer = ({ videoId }) => {
     const options = {
       width: "400",
@@ -213,7 +216,7 @@ function OwnerPlaylist() {
               {playlist.title || "플레이리스트 이름"}
             </h1>
           </div>
-          
+
           <div className="playlist-cover">
             <div className="playlist">
               {songs.length > 0 && (
@@ -282,40 +285,44 @@ function OwnerPlaylist() {
               </button>
             )}
           </div>
-          <table className="songs-table">
-            <thead>
-              <tr>
-                <th>
-                  <input
-                    className="check"
-                    type="checkbox"
-                    onChange={handleSelectAll}
-                    checked={selectedSongs.length === songs.length}
-                  />
-                </th>
-                <th>Title</th>
-                <th>Channel</th>
-                <th>Like</th>
-              </tr>
-            </thead>
-            <tbody>
-              {songs.map((song) => (
-                <tr key={song.playlistItemId}>
-                  <td>
+          <div className="songs-table-container">
+            <table className="songs-table">
+              <thead>
+                <tr>
+                  <th>
                     <input
+                      className="check"
                       type="checkbox"
-                      checked={selectedSongs.includes(song.playlistItemId)}
-                      onChange={() => handleSongSelection(song.playlistItemId)}
-                      disabled={!isEditing}
+                      onChange={handleSelectAll}
+                      checked={selectedSongs.length === songs.length}
                     />
-                  </td>
-                  <td>{song.videoTitle}</td>
-                  <td>{song.videoOwnerChannelTitle}</td>
-                  <td>♡{song.like}</td>
+                  </th>
+                  <th>Title</th>
+                  <th>Channel</th>
+                  <th>Like</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {songs.map((song) => (
+                  <tr key={song.playlistItemId}>
+                    <td>
+                      <input
+                        type="checkbox"
+                        checked={selectedSongs.includes(song.playlistItemId)}
+                        onChange={() =>
+                          handleSongSelection(song.playlistItemId)
+                        }
+                        disabled={!isEditing}
+                      />
+                    </td>
+                    <td>{song.videoTitle}</td>
+                    <td>{song.videoOwnerChannelTitle}</td>
+                    <td>♡{song.like}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
