@@ -10,6 +10,9 @@ import { MdExitToApp } from "react-icons/md";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import userEvent from "@testing-library/user-event";
+import Modal from "react-modal";
+import AddMusic from "../guestPage/Item";
+
 function Guest() {
   const [pinNumber, setPinNumber] = useState("");
   const [selectedSongs, setSelectedSongs] = useState([]);
@@ -19,6 +22,16 @@ function Guest() {
   const [userInfo, setUserInfo] = useState({ username: "사니", pin: "202309" });
   const [songs, setSongs] = useState([]); // State to hold playlist items
   const navigate = useNavigate();
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   useEffect(() => {
     let config_item = {
@@ -153,6 +166,15 @@ function Guest() {
 
   return (
     <div className="header">
+      <Modal
+        isOpen={isModalOpen}
+        onRequestClose={closeModal}
+        contentLabel="Add Music Modal"
+        className="modal"
+        overlayClassName="modal-overlay"
+      >
+        <AddMusic closeModal={closeModal} /> {/* 모달 닫기 함수 전달 */}
+      </Modal>
       <div className="header-container">
         <h1 className="logo">
           <span className="pinLogoContainer">
@@ -232,7 +254,7 @@ function Guest() {
                     내 Playlist에 저장
                   </p>
                 </button>
-                <button className="edit-button" onClick={addPlaylistItem}>
+                <button className="edit-button" onClick={openModal}>
                   <p
                     style={{
                       fontFamily: "Pretendard",
