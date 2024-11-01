@@ -1,7 +1,8 @@
+// SignUpPage.js
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
 import { ToastContainer, toast } from "react-toastify";
+import api from "services/api";
 import "react-toastify/dist/ReactToastify.css";
 import "styles/login.css";
 
@@ -11,14 +12,7 @@ function SignUpPage() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleSignUp = async () => {
-    const apiUrl = process.env.REACT_APP_BACKEND_API_URL;
-    // //이건 연결되면 지우셈
-    // setTimeout(() => {
-    //   navigate("/login"); // 회원가입 성공 시 로그인 페이지로 이동
-    // }, 500);
-
-    //--서버연결--
+  const handleSignUp = () => {
     // 빈칸 확인
     if (!username.trim() || !password.trim() || !confirmPassword.trim()) {
       toast.error("모두 입력해주세요.");
@@ -32,38 +26,54 @@ function SignUpPage() {
       return;
     }
 
+    // 숫자로만 이루어진 아이디 확인
+    const numericOnlyRegex = /^[0-9]+$/;
+    if (numericOnlyRegex.test(username)) {
+      toast.error("아이디는 숫자로만 이루어질 수 없습니다.");
+      return;
+    }
+
     // 비밀번호 일치 확인
     if (password !== confirmPassword) {
       toast.error("비밀번호가 일치하지 않습니다.");
       return;
     }
 
-    try {
-      const response = await fetch(`${apiUrl}/api/users`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, password }),
-      });
+    const config = {
+      method: "post",
+      maxBodyLength: Infinity,
+      url: "/api/user/signUp",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: {
+        username: username,
+        password: password,
+      },
+    };
 
-      const data = await response.json();
-
-      if (response.ok) {
-        toast.success("회원가입 성공!");
-        setTimeout(() => {
-          navigate("/login"); // 회원가입 성공 시 로그인 페이지로 이동
-        }, 500); // 성공 메시지 후 1초 후 이동
-      } else {
-        if (data.message === "Username already exists") {
+    // api 요청
+    api
+      .request(config)
+      .then((response) => {
+        if (response.status === 200 || response.status === 201) {
+          toast.success("회원가입 성공!");
+          setTimeout(() => {
+            navigate("/login");
+          }, 500);
+        }
+      })
+      .catch((error) => {
+        if (
+          error.response &&
+          error.response.data.message === "Username already exists"
+        ) {
           toast.error("이미 존재하는 아이디입니다.");
         } else {
-          toast.error("회원가입 중 오류가 발생했습니다.");
+          toast.error("서버 연결에 실패했습니다.");
+          console.error("회원가입 중 오류 발생:", error);
         }
-      }
-    } catch (error) {
-      toast.error("서버 연결에 실패했습니다.");
-    }
+      });
   };
 
   return (
@@ -82,7 +92,6 @@ function SignUpPage() {
       <div className="content-right">
         <div className="inputGroup">
           <label>
-            {" "}
             아이디 <span style={{ color: "#be0000" }}>*</span>
           </label>
           <input

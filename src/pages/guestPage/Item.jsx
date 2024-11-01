@@ -5,12 +5,14 @@ import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
 import "styles/login.css";
 
-function LoginPage() {
+function AddMusic() {
   const [username, setUsername] = useState(""); // 추가된 상태
   const [videoUrl, setVideoUrl] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const [position, setPosition] = useState(1); // Default position as number
-  const [playlistId, setPlaylistId] = useState("PLCnwzD94RuGCzkz-_VKsDK1KJ8ecc3U7L");
+  const [playlistId, setPlaylistId] = useState(
+    "PLCnwzD94RuGCzkz-_VKsDK1KJ8ecc3U7L"
+  );
   const navigate = useNavigate();
 
   // Load saved username and position on page load
@@ -20,7 +22,7 @@ function LoginPage() {
       setUsername(savedUsername);
       setRememberMe(true);
     }
-    const pos = Number(localStorage.getItem("len")) || 1; 
+    const pos = Number(localStorage.getItem("len")) || 1;
     setPosition(pos || 1); // Set to 1 if pos is null or undefined
   }, []);
 
@@ -28,19 +30,19 @@ function LoginPage() {
     console.log("here");
     console.log(videoUrl, playlistId, position);
     let data = JSON.stringify({
-      "playlistId": playlistId,
-      "videoUrl": videoUrl,
-      "position": position
+      playlistId: playlistId,
+      videoUrl: videoUrl,
+      position: position,
     });
 
     let config = {
-      method: 'post',
+      method: "post",
       maxBodyLength: Infinity,
-      url: 'http://3.36.76.110:8080/api/playlistItems',
+      url: "http://3.36.76.110:8080/api/playlistItems",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
-      data: data
+      data: data,
     };
 
     try {
@@ -83,14 +85,14 @@ function LoginPage() {
           </div>
           <div className="inputGroup">
             <label htmlFor="numeric-slider"> 몇 번에 넣을 건가요? </label>
-            <div style={{ padding: '5px', textAlign: 'left' }}>
+            <div style={{ padding: "5px", textAlign: "left" }}>
               <input
                 type="range"
                 min={1}
                 max={4} // 여기 고쳐야 함
-                value={position} // `position` is now a number
+                value={position} // position is now a number
                 onChange={handleSliderChange}
-                style={{ width: '100%' }}
+                style={{ width: "100%" }}
               />
             </div>
             <label> {position} 번 </label>
@@ -98,7 +100,7 @@ function LoginPage() {
           <button
             onClick={(event) => {
               event.preventDefault(); // Prevent default form submission behavior
-              addPlaylistItem(videoUrl, playlistId, position-1);
+              addPlaylistItem(videoUrl, playlistId, position - 1);
               navigate("/Guest");
             }}
             className="loginButton"
@@ -111,4 +113,4 @@ function LoginPage() {
   );
 }
 
-export default LoginPage;
+export default AddMusic;
