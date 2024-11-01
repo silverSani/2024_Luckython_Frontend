@@ -61,18 +61,18 @@ function Owner() {
       });
   };
 
-  // const addNewCard = async () => {
-  //   const newPlaylistData = await createPlaylist();
-  //   if (newPlaylistData) {
-  //     const newPlaylist = {
-  //       title: newPlaylistData.title,
-  //       description: newPlaylistData.description,
-  //       imageUrl: 'https://via.placeholder.com/150',
-  //       videoId: ''
-  //     };
-  //     setPlaylists([...playlists, newPlaylist]);
-  //   }
-  // };
+  const addNewCard = async () => {
+    const newPlaylistData = await createPlaylist();
+    if (newPlaylistData) {
+      const newPlaylist = {
+        title: newPlaylistData.title,
+        description: newPlaylistData.description,
+        imageUrl: 'https://via.placeholder.com/150',
+        videoId: ''
+      };
+      setPlaylists([...playlists, newPlaylist]);
+    }
+  };
 
   const handleInputChange = (event) => {
     setPinNumber(event.target.value);
@@ -161,9 +161,9 @@ function Owner() {
             {playlist.canModify && <div className="modify-badge">수정 가능</div>}
           </div>
         ))}
-        {/* <div className="playlist-card add-card" onClick={addNewCard}>
+        <div className="playlist-card add-card" onClick={addNewCard}>
           <div className="add-icon">+</div>
-        </div> */}
+        </div>
       </div>
     </div>
   );
