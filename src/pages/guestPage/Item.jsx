@@ -22,8 +22,13 @@ function AddMusic({ closeModal }) {
       setUsername(savedUsername);
       setRememberMe(true);
     }
-    const pos = Number(localStorage.getItem("len")) || 1;
-    setPosition(pos || 1);
+    
+
+    // console.log("len", localStorage.getItem("len"));
+    // const pos = Number(localStorage.getItem("len")) || 1;
+    // console.log("p1", pos);
+    // setPosition(pos || 1);
+    // console.log("p2", position);
   }, []);
 
   const addPlaylistItem = async (videoUrl, playlistId, position) => {
@@ -53,6 +58,7 @@ function AddMusic({ closeModal }) {
 
   const handleSliderChange = (event) => {
     setPosition(event.target.valueAsNumber);
+    console.log("p3", position);
   };
 
   return (
@@ -100,7 +106,7 @@ function AddMusic({ closeModal }) {
               <input
                 type="range"
                 min={1}
-                max={4}
+                max={position}
                 value={position}
                 onChange={handleSliderChange}
                 style={{ width: "100%" }}

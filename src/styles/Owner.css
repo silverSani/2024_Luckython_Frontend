@@ -189,3 +189,15 @@
 .description {
   margin-top: 10px;
 }
+
+.add-card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 5px 5px 5px gray;
+}
+
+.add-icon {
+  font-size: 50px;
+  color: #555;
+}

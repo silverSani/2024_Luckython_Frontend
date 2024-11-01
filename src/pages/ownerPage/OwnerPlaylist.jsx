@@ -12,14 +12,10 @@ function OwnerPlaylist() {
   const [selectedSongs, setSelectedSongs] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [isProfileEditing, setIsProfileEditing] = useState(false);
-  const [profileName, setProfileName] = useState("사용자 이름");
-  const [playlist, setPlaylist] = useState({
-    title: "",
-    id: "",
-    isEditable: false,
-  });
-  const [editedTitle, setEditedTitle] = useState("");
-  const [songs, setSongs] = useState([]); // State to hold playlist items
+  const [profileName, setProfileName] = useState('사용자 이름');
+  const [playlist, setPlaylist] = useState({ title: '', id: '', isEditable: false });
+  const [editedTitle, setEditedTitle] = useState('');
+  const [songs, setSongs] = useState([]); 
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
 
   //플레이리스트 데이터를 API로부터 가져오는 함수
@@ -27,9 +23,7 @@ function OwnerPlaylist() {
     let config = {
       method: "get",
       maxBodyLength: Infinity,
-      url: `http://3.36.76.110:8080/api/playlistItems/${localStorage.getItem(
-        "pin"
-      )}`,
+      url: "http://3.36.76.110:8080/api/playlistItems/5",
       headers: {},
     };
 
@@ -54,7 +48,7 @@ function OwnerPlaylist() {
     let config_playlist = {
       method: "get",
       maxBodyLength: Infinity,
-      url: "http://3.36.76.110:8080/api/playlists/4",
+      url: "http://3.36.76.110:8080/api/playlists/5",
       headers: {},
     };
 
@@ -69,6 +63,7 @@ function OwnerPlaylist() {
       });
   }, []);
 
+  
   // 플레이리스트 제목을 업데이트하는 함수
   const updatePlaylistTitle = () => {
     api
@@ -170,16 +165,14 @@ function OwnerPlaylist() {
     toggleProfileEdit();
   };
 
-  // Video end event handler to move to the next video
   const handleVideoEnd = () => {
     if (currentVideoIndex < songs.length - 1) {
-      setCurrentVideoIndex(currentVideoIndex + 1); // Move to the next video
+      setCurrentVideoIndex(currentVideoIndex + 1); 
     } else {
-      setCurrentVideoIndex(0); // Loop back to the first video if at the end
+      setCurrentVideoIndex(0); 
     }
   };
-
-  // VideoPlayer component with end event listener
+ 
   const VideoPlayer = ({ videoId }) => {
     const options = {
       width: "400",
@@ -220,6 +213,7 @@ function OwnerPlaylist() {
               {playlist.title || "플레이리스트 이름"}
             </h1>
           </div>
+          
           <div className="playlist-cover">
             <div className="playlist">
               {songs.length > 0 && (
