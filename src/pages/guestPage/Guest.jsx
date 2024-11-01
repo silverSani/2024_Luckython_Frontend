@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useInsertionEffect, useState } from 'react';
 import '../../styles/OwnerPlaylist.css'; 
 import '../../styles/Owner.css';
 import '../../styles/Guest.css';
@@ -7,40 +7,61 @@ import api from "services/api"
 import userImg from "../../assets/Me.png"
 import { FaRegCirclePlay } from "react-icons/fa6";
 import { MdExitToApp } from "react-icons/md";
+import axios from 'axios';
+import {useNavigate} from 'react-router-dom';
+import userEvent from '@testing-library/user-event';
 
 function Guest() {
   const [pinNumber, setPinNumber] = useState('');
   const [selectedSongs, setSelectedSongs] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
-  const [isProfileEditing, setIsProfileEditing] = useState(false);
-  const [profileName, setProfileName] = useState('사용자 이름');
-  const [playlist, setPlaylist] = useState({ title: '', id: '', isEditable: false }); 
+  const [playlist, setPlaylist] = useState([]); 
   const [editedTitle, setEditedTitle] = useState('');
   const [userInfo, setUserInfo] = useState({username : '사니', pin : '202309'})
+  const [songs, setSongs] = useState([]); // State to hold playlist items
+  const navigate = useNavigate();
 
-  const songs = [
-    { id: 1, title: '아 진짜 너무 졸리다', artist: '이지은 망명', likes: 1500 },
-    { id: 2, title: '피곤해용 힘들어요', artist: '이지은 영혼', likes: 2 },
-    { id: 3, title: '리액트 못하겠어요', artist: '박은산 영혼', likes: 20000 },
-    // ... 추가 노래 데이터
-  ];
+  useEffect(() => {
+    let config_item = {
+      method: 'get',
+      maxBodyLength: Infinity,
+      url: 'http://3.36.76.110:8080/api/playlistItems/6',
+      headers: {}
+    };
+  
+    axios.request(config_item)
+      .then((response) => {
+        console.log(JSON.stringify(response.data));
+        
+        // 응답 데이터에서 dataList 배열을 가져오기
+        const playlistName = response.data.dataList;
+        if (Array.isArray(playlistName)) {
+          setSongs(playlistName); 
+        } else {
+          console.error("응답 데이터가 배열이 아닙니다:", playlistName);
+          setSongs([]); // 배열이 아닌 경우 빈 배열로 초기화
+        }
+      })
+      .catch((error) => {
+        console.log("API 호출 중 오류 발생:", error);
+      });
 
-  // 플레이리스트 데이터를 API로부터 가져오는 함수
-  // useEffect(() => {
-  //   api.get('/api/playlists')
-  //     .then(response => {
-  //       const fetchedPlaylist = response.data[0]; // 첫 번째 플레이리스트를 가져온다고 가정
-  //       setPlaylist({
-  //         title: fetchedPlaylist.title,
-  //         id: fetchedPlaylist.id,
-  //         isEditable: fetchedPlaylist.isEditable,
-  //       });
-  //       setEditedTitle(fetchedPlaylist.title);
-  //     })
-  //     .catch(error => {
-  //       console.error('플레이리스트 로드 중 오류:', error);
-  //     });
-  // }, []);
+      let config_playlist = {
+        method: 'get',
+        maxBodyLength: Infinity,
+        url: 'http://3.36.76.110:8080/api/playlists/6',
+        headers: { }
+      };
+      
+      axios.request(config_playlist)
+      .then((response) => {
+        console.log(JSON.stringify(response.data));
+        setPlaylist(response.data.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   // 플레이리스트 제목을 업데이트하는 함수
   const updatePlaylistTitle = () => {
@@ -111,7 +132,8 @@ function Guest() {
   };
 
   const addPlaylistItem = () => {
-    
+    navigate("/Item");
+    localStorage.setItem("len", songs.length-1);
   };
 
   const handleSave = () => {
@@ -121,20 +143,6 @@ function Guest() {
   const handleCancel = () => {
     setIsEditing(false);
     setEditedTitle(playlist.title);
-  };
-
-  const toggleProfileEdit = () => {
-    setIsProfileEditing(!isProfileEditing);
-  };
-
-  const handleProfileSave = () => {
-    console.log('Saved profile name:', profileName);
-    toggleProfileEdit();
-  };
-
-  const handleProfileCancel = () => {
-    setProfileName('사용자 이름');
-    toggleProfileEdit();
   };
 
   return (
@@ -162,9 +170,21 @@ function Guest() {
             <h1 className="playlistName">{playlist.title || '플레이리스트 이름'}</h1>
           </div>
           <div className="playlist-cover">
-            <img src="https://via.placeholder.com/150" alt="Playlist Cover" />
+            <div className='playlist'/>
+           
+           
+           
             <div className="playlist-description">
-              아이유, 태연, 볼빨간사춘기, 백예린, 약동무지개, 윤하 ...
+                <p style={{
+                      fontFamily: 'Pretendard',
+                      fontStyle: 'normal',
+                      fontWeight: 550,
+                      fontSize: '25px',
+                      lineHeight: '50px',
+                      textAlign: 'center'
+                    }}>
+                      {playlist.description || '플레이리스트 설명'}
+                  </p>
             </div>
           </div>
 
@@ -220,31 +240,29 @@ function Guest() {
               <tr>
                 <th>
                   <input
-                    className="check"
-                    type="checkbox"
-                    onChange={handleSelectAll}
+                    className="check" 
+                    type="checkbox" 
+                    onChange={handleSelectAll} 
                     checked={selectedSongs.length === songs.length}
                   />
                 </th>
-                <th>재생목록</th>
-                <th>아티스트</th>
-                <th>좋아요</th>
+                <th>Title</th>
+                <th>Channel</th>
+                <th>Like</th>
               </tr>
             </thead>
             <tbody>
               {songs.map((song) => (
-                <tr key={song.id}>
+                <tr key={song.playlistItemId}>
                   <td>
-                    <input
-                      type="checkbox"
-                      checked={selectedSongs.includes(song.id)}
-                      onChange={() => handleSongSelection(song.id)}
-                      disabled={!isEditing}
-                    />
+                    <input type="checkbox" 
+                    checked={selectedSongs.includes(song.playlistItemId)} 
+                    onChange={() => handleSongSelection(song.playlistItemId)} 
+                    disabled={!isEditing}/>
                   </td>
-                  <td>{song.title}</td>
-                  <td>{song.artist}</td>
-                  <td>♡{song.likes}</td>
+                  <td>{song.videoTitle}</td> 
+                  <td>{song.videoOwnerChannelTitle}</td> 
+                  <td>♡{song.like}</td>
                 </tr>
               ))}
             </tbody>

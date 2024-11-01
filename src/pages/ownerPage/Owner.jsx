@@ -150,7 +150,7 @@ function Owner() {
               className="playlist-thumbnail"
               src={playlist.imageUrl}
               alt={playlist.title}
-              onClick={() => handleThumbnailClick(playlist.playlistId)} // Add click handler
+              onClick={() => handleThumbnailClick(playlist.playlistId)} 
             />
             <h3 className="playlist-name">{playlist.customTitle || playlist.title}</h3>
             {playlist.canModify}
