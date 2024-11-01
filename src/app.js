@@ -5,7 +5,7 @@ import Login from "pages/login";
 import SignUp from "pages/sign-up";
 import Owner from "pages/ownerPage/Owner";
 import OwnerPlaylist from "pages/ownerPage/OwnerPlaylist";
-import Guest from "pages/guestPage/Guest"
+import Guest from "pages/guestPage/Guest";
 import LoginBase from "layouts/LoginBase";
 import Item from "pages/guestPage/Item"
 
