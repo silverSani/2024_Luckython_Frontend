@@ -533,7 +533,7 @@ function Guest() {
   const [pinNumber, setPinNumber] = useState("");
   const [selectedSongs, setSelectedSongs] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
-  const [playlist, setPlaylist] = useState([]);
+  const [playlist, setPlaylist] = useState({ title: "", description: "" });
   const [userInfo, setUserInfo] = useState({ username: "사니", pin: "" });
   const [songs, setSongs] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -560,15 +560,17 @@ function Guest() {
 
       // 서버에 pin 값을 포함한 요청 보내기
       axios
-        .get(`http://3.36.76.110:8080/api/playlists/${pin}`)
+        .get(`http://3.36.76.110:8080/api/playlists/pin/${pin}`)
         .then((playlistResponse) => {
-          const playlistData = playlistResponse.data.data;
+          const playlistData = playlistResponse.data.data || {}; // 빈 객체 기본값
           setPlaylist(playlistData);
 
-          return axios.get(`http://3.36.76.110:8080/api/playlistItems/${pin}`);
+          return axios.get(
+            `http://3.36.76.110:8080/api/playlistItems/pin/${pin}`
+          );
         })
         .then((songsResponse) => {
-          const songsData = songsResponse.data.dataList;
+          const songsData = songsResponse.data.dataList || [];
           setSongs(songsData);
           setIsLoaded(true); // 데이터 로드 완료 후 상태 업데이트
         })
@@ -638,6 +640,7 @@ function Guest() {
             </div>
             <div className="playlist-cover">
               <div className="playlist" />
+
               <div className="playlist-description">
                 <p
                   style={{
@@ -690,23 +693,29 @@ function Guest() {
                 </tr>
               </thead>
               <tbody>
-                {songs.map((song) => (
-                  <tr key={song.playlistItemId}>
-                    <td>
-                      <input
-                        type="checkbox"
-                        checked={selectedSongs.includes(song.playlistItemId)}
-                        onChange={() =>
-                          handleSongSelection(song.playlistItemId)
-                        }
-                        disabled={!isEditing}
-                      />
-                    </td>
-                    <td>{song.videoTitle}</td>
-                    <td>{song.videoOwnerChannelTitle}</td>
-                    <td>♡{song.like}</td>
+                {songs.length > 0 ? (
+                  songs.map((song) => (
+                    <tr key={song.playlistItemId}>
+                      <td>
+                        <input
+                          type="checkbox"
+                          checked={selectedSongs.includes(song.playlistItemId)}
+                          onChange={() =>
+                            handleSongSelection(song.playlistItemId)
+                          }
+                          disabled={!isEditing}
+                        />
+                      </td>
+                      <td>{song.videoTitle}</td>
+                      <td>{song.videoOwnerChannelTitle}</td>
+                      <td>♡{song.like}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="4">No songs available</td>
                   </tr>
-                ))}
+                )}
               </tbody>
             </table>
           </div>
