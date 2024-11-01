@@ -82,7 +82,7 @@ function Guest() {
     }
   };
 
-    const handleVideoEnd = () => {
+  const handleVideoEnd = () => {
     if (currentVideoIndex < songs.length - 1) {
       setCurrentVideoIndex(currentVideoIndex + 1);
     } else {
@@ -144,11 +144,11 @@ function Guest() {
               </h1>
             </div>
             <div className="playlist-cover">
-             <div className="playlist">
+              <div className="playlist">
                 {songs.length > 0 && (
-                <VideoPlayer videoId={songs[currentVideoIndex].videoId} />
-              )}
-            </div>
+                  <VideoPlayer videoId={songs[currentVideoIndex].videoId} />
+                )}
+              </div>
 
               <div className="playlist-description">
                 <p
@@ -185,6 +185,44 @@ function Guest() {
           </div>
 
           <div className="columns">
+            <div className="profile-edit">
+              <>
+                <div className="row">
+                  <button className="save-my-playlist-button">
+                    <p
+                      style={{
+                        fontFamily: "Pretendard",
+                        fontStyle: "normal",
+                        fontWeight: 550,
+                        fontSize: "13px",
+                        lineHeight: "19px",
+                        textAlign: "center",
+                      }}
+                    >
+                      내 Playlist에 저장
+                    </p>
+                  </button>
+                  <button
+                    className="edit-button"
+                    onClick={openModal}
+                    style={{ marginRight: "20px" }}
+                  >
+                    <p
+                      style={{
+                        fontFamily: "Pretendard",
+                        fontStyle: "normal",
+                        fontWeight: 550,
+                        fontSize: "13px",
+                        lineHeight: "19px",
+                        textAlign: "center",
+                      }}
+                    >
+                      음원 추가
+                    </p>
+                  </button>
+                </div>
+              </>
+            </div>
             <table className="songs-table">
               <thead>
                 <tr>
