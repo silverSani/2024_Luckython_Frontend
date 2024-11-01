@@ -203,6 +203,7 @@ function OwnerPlaylist() {
             <FaRegCirclePlay style={{ fontSize: '40px', marginTop: '-5px' }} />
             <h1 className="playlistName">{playlist.title || '플레이리스트 이름'}</h1>
           </div>
+          
           <div className="playlist-cover">
             <div className="playlist">
               {songs.length > 0 && (
