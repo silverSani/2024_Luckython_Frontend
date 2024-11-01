@@ -5,7 +5,7 @@ import Login from "pages/login";
 import SignUp from "pages/sign-up";
 import Owner from "pages/ownerPage/Owner";
 import OwnerPlaylist from "pages/ownerPage/OwnerPlaylist";
-import Guest from "pages/guestPage/Guest"
+import Guest from "pages/guestPage/Guest";
 import LoginBase from "layouts/LoginBase";
 
 export default function App() {
@@ -17,8 +17,8 @@ export default function App() {
         <Route path="/sign-up" element={<SignUp />}></Route>
       </Route>
       <Route path="/Owner" element={<Owner />}></Route>
-      <Route path="/OwnerPlaylist" element={<OwnerPlaylist />}></Route> 
-      <Route path="/Guest" element={<Guest />}></Route> 
+      <Route path="/OwnerPlaylist" element={<OwnerPlaylist />}></Route>
+      <Route path="/Guest" element={<Guest />}></Route>
     </Routes>
   );
 }
