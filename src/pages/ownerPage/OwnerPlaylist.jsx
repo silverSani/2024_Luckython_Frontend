@@ -15,8 +15,8 @@ function OwnerPlaylist() {
   const [profileName, setProfileName] = useState('사용자 이름');
   const [playlist, setPlaylist] = useState({ title: '', id: '', isEditable: false }); 
   const [editedTitle, setEditedTitle] = useState('');
-  const [songs, setSongs] = useState([]); // State to hold playlist items
-  const [currentVideoIndex, setCurrentVideoIndex] = useState(0)
+  const [songs, setSongs] = useState([]); 
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
 
  //플레이리스트 데이터를 API로부터 가져오는 함수 
  useEffect(() => {
@@ -141,16 +141,15 @@ function OwnerPlaylist() {
     toggleProfileEdit();
   };
 
-  // Video end event handler to move to the next video
   const handleVideoEnd = () => {
     if (currentVideoIndex < songs.length - 1) {
-      setCurrentVideoIndex(currentVideoIndex + 1); // Move to the next video
+      setCurrentVideoIndex(currentVideoIndex + 1); 
     } else {
-      setCurrentVideoIndex(0); // Loop back to the first video if at the end
+      setCurrentVideoIndex(0); 
     }
   };
 
-  // VideoPlayer component with end event listener
+ 
   const VideoPlayer = ({ videoId }) => {
     const options = {
       width: '400',

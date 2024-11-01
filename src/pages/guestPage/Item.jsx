@@ -6,7 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "styles/login.css";
 
 function LoginPage() {
-  const [username, setUsername] = useState(""); // 추가된 상태
+  const [username, setUsername] = useState(""); 
   const [videoUrl, setVideoUrl] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const [position, setPosition] = useState(1); // Default position as number

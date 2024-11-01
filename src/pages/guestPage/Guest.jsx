@@ -9,6 +9,7 @@ import { FaRegCirclePlay } from "react-icons/fa6";
 import { MdExitToApp } from "react-icons/md";
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom';
+import YouTube from 'react-youtube';
 
 function Guest() {
   const [pinNumber, setPinNumber] = useState('');
@@ -20,6 +21,7 @@ function Guest() {
   const [editedTitle, setEditedTitle] = useState('');
   const [userInfo, setUserInfo] = useState({username : '사니', pin : '202309'})
   const [songs, setSongs] = useState([]); // State to hold playlist items
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -144,6 +146,27 @@ function Guest() {
     toggleProfileEdit();
   };
 
+  const handleVideoEnd = () => {
+    if (currentVideoIndex < songs.length - 1) {
+      setCurrentVideoIndex(currentVideoIndex + 1); 
+    } else {
+      setCurrentVideoIndex(0); 
+    }
+  };
+
+ 
+  const VideoPlayer = ({ videoId }) => {
+    const options = {
+      width: '400',
+      height: '300',
+      playerVars: {
+        autoplay: 1, 
+      },
+    };
+
+    return <YouTube videoId={videoId} opts={options} onEnd={handleVideoEnd} />;
+  };
+
   return (
     <div className="header">
         <div className="header-container">
@@ -168,13 +191,12 @@ function Guest() {
             <FaRegCirclePlay style={{ fontSize: '40px', marginTop: '-3px' }} />
             <h1 className="playlistName">{playlist.title || '플레이리스트 이름'}</h1>
           </div>
+
           <div className="playlist-cover">
-            <div className='playlist'/>
-           
-           
-           
-            <div className="playlist-description">
-              아이유, 태연, 볼빨간사춘기, 백예린, 약동무지개, 윤하 ...
+            <div className="playlist">
+              {songs.length > 0 && (
+                <VideoPlayer videoId={songs[currentVideoIndex].videoId} /> 
+              )}
             </div>
           </div>
 
