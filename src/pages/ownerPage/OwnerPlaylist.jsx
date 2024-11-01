@@ -23,9 +23,7 @@ function OwnerPlaylist() {
     let config = {
       method: "get",
       maxBodyLength: Infinity,
-      url: `http://3.36.76.110:8080/api/playlistItems/${localStorage.getItem(
-        "pin"
-      )}`,
+      url: "http://3.36.76.110:8080/api/playlistItems/5",
       headers: {},
     };
 
@@ -50,7 +48,7 @@ function OwnerPlaylist() {
     let config_playlist = {
       method: "get",
       maxBodyLength: Infinity,
-      url: "http://3.36.76.110:8080/api/playlists/4",
+      url: "http://3.36.76.110:8080/api/playlists/5",
       headers: {},
     };
 
